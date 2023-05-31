@@ -129,7 +129,7 @@ These are the results, first, accuracy and then execution time.
 | **CLD3**            | 92.2%        | 95.8%        | 94.7%        | 69.0%        | 51.5%        |
 | **franc**           | 89.8%        | 92.0%        | 90.5%        | 65.9%        | 52.9%        |
 -->
-<img width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-py/main/benchmarks/table_accuracy_js.svg">
+<img width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/benchmarks/table_accuracy_js.svg">
 
 <!--- Time table
 |                     | Tweets       | Big test     | Sentences    | Word pairs   | Single words |
@@ -144,7 +144,7 @@ These are the results, first, accuracy and then execution time.
 | **franc**           |     1.2"     |      8"      |      7.8"    |     2.8"     |     2"       |
 | **Nito-ELD-php**    |     0.31"    |      2.5"    |      2.2"    |     0.66"    |     0.48"    |
 -->
-<img width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-py/main/benchmarks/table_time_js.svg">
+<img width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/benchmarks/table_time_js.svg">
 
 <sup style="color:#08e">1.</sup> <sup style="color:#777">Lingua could have a small advantage as it participates with 54 languages, 6 less.</sup>  
 <sup style="color:#08e">2.</sup> <sup style="color:#777">CLD2 and CLD3, return a list of languages, the ones not included in this test where discarded, but usually they return one language, I believe they have a disadvantage. 
