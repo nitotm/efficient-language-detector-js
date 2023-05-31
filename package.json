@@ -1,0 +1,33 @@
+{
+  "name": "eld",
+  "version": "0.9.0",
+  "description": "Fast and accurate natural language detection. Detector written in Javascript. Efficient language detector, Nito-ELD, ELD.",
+  "main": "src/languageDetector.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nitotm/efficient-language-detector-js.git"
+  },
+  "keywords": [
+    "nlp",
+    "language",
+    "natural-language-processing",
+    "natural-language",
+    "language-detection",
+    "language-detector",
+    "language-identification"
+  ],
+  "author": {
+    "name": "Nito T.M.",
+    "url": "https://github.com/nitotm"
+  },
+  "funding": "https://linktr.ee/nitotm",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/nitotm/efficient-language-detector-js/issues"
+  },
+  "homepage": "https://github.com/nitotm/efficient-language-detector-js#readme",
+  "dependencies": {
+    "eld": "^0.9.0"
+  }
+}

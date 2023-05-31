@@ -1,0 +1,132 @@
+<svg xmlns='http://www.w3.org/2000/svg' font-family='Arial, Helvetica, sans-serif' font-size='17' viewBox='0 0 600 271'>
+  <path d='M0 0h600v350H0z' fill='#fff'/>
+  <text fill='#555' transform='translate(30 16)'>
+    <tspan x='0' y='0'>Accuracy</tspan>
+  </text>
+  <text transform='translate(4 52)'>Nito-ELD</text>
+  		<path d='M126 30h93v30H126z' fill='#dfd'/>
+	<text transform='translate(132 52)'>99.3%</text>
+		<path d='M219 30h93v30H219z' fill='#dfd'/>
+	<text transform='translate(225 52)'>99.4%</text>
+		<path d='M312 30h93v30H312z' fill='#dfd'/>
+	<text transform='translate(318 52)'>98.8%</text>
+		<path d='M405 30h93v30H405z' fill='#fee'/>
+	<text transform='translate(411 52)'>87.6%</text>
+		<path d='M498 30h102v30H498z' fill='#fee'/>
+	<text transform='translate(504 52)'>73.3%</text>
+	
+	 <text transform='translate(4 82)'>Nito-ELD-L</text>
+  		<path d='M126 60h93v30H126z' fill='#dfd'/>
+	<text transform='translate(132 82)'>99.4%</text>
+		<path d='M219 60h93v30H219z' fill='#dfd'/>
+	<text transform='translate(225 82)'>99.4%</text>
+		<path d='M312 60h93v30H312z' fill='#dfd'/>
+	<text transform='translate(318 82)'>98.7%</text>
+		<path d='M405 60h93v30H405z' fill='#fee'/>
+	<text transform='translate(411 82)'>89.6%</text>
+		<path d='M498 60h102v30H498z' fill='#fee'/>
+	<text transform='translate(504 82)'>76.4%</text> 
+	
+	<text transform='translate(4 112)'>Nito-ELD-XS</text>
+  		<path d='M126 90h93v30H126z' fill='#dfd'/>
+	<text transform='translate(132 112)'>99.2%</text>
+		<path d='M219 90h93v30H219z' fill='#dfd'/>
+	<text transform='translate(225 112)'>99.4%</text>
+		<path d='M312 90h93v30H312z' fill='#dfd'/>
+	<text transform='translate(318 112)'>98.4%</text>
+		<path d='M405 90h93v30H405z' fill='#fee'/>
+	<text transform='translate(411 112)'>84.4%</text>
+		<path d='M498 90h102v30H498z' fill='#eee'/>
+	<text transform='translate(504 112)'>66.8%</text> 
+	
+  <text transform='translate(4 142)'>Lingua</text><text fill='#08e' font-size='12' transform='translate(54 132)'>1</text>
+    	<path d='M126 120h93v30H126z' fill='#dfd'/>
+	<text transform='translate(132 142)'>98.8%</text>
+		<path d='M219 120h93v30H219z' fill='#dfd'/>
+	<text transform='translate(225 142)'>99.1%</text>
+		<path d='M312 120h93v30H312z' fill='#dfd'/>
+	<text transform='translate(318 142)'>98.6%</text>
+		<path d='M405 120h93v30H405z' fill='#fec'/>
+	<text transform='translate(411 142)'>93.1%</text>
+		<path d='M498 120h102v30H498z' fill='#fee'/>
+	<text transform='translate(504 142)'>80.0%</text>
+	
+  <text transform='translate(4 172)'>CLD2</text><text fill='#08e' font-size='12' transform='translate(49 162)'>2</text>
+		<path d='M126 150h93v30H126z' fill='#fec'/>
+	<text transform='translate(132 172)'>93.8%</text>
+		<path d='M219 150h93v30H219z' fill='#ffc'/>
+	<text transform='translate(225 172)'>97.2%</text>
+		<path d='M312 150h93v30H312z' fill='#ffc'/>
+	<text transform='translate(318 172)'>97.2%</text>
+		<path d='M405 150h93v30H405z' fill='#fee'/>
+	<text transform='translate(411 172)'>87.7%</text>
+		<path d='M498 150h102v30H498z' fill='#eee'/>
+	<text transform='translate(504 172)'>69.6%</text>
+	
+  <text transform='translate(4 202)'>Lingua low</text><text fill='#08e' font-size='12' transform='translate(85 192)'>1</text>
+		<path d='M126 180h93v30H126z' fill='#ffc'/>
+	<text transform='translate(132 202)'>96.0%</text>
+		<path d='M219 180h93v30H219z' fill='#ffc'/>
+	<text transform='translate(225 202)'>97.2%</text>
+		<path d='M312 180h93v30H312z' fill='#ffc'/>
+	<text transform='translate(318 202)'>96.3%</text>
+		<path d='M405 180h93v30H405z' fill='#fee'/>
+	<text transform='translate(411 202)'>83.7%</text>
+		<path d='M498 180h102v30H498z' fill='#eee'/>
+	<text transform='translate(504 202)'>68.0%</text>  
+	
+  <text transform='translate(4 232)'>CLD3</text><text fill='#08e' font-size='12' transform='translate(49 222)'>2</text>
+		<path d='M126 210h93v30H126z' fill='#fec'/>
+	<text transform='translate(132 232)'>92.2%</text>
+		<path d='M219 210h93v30H219z' fill='#ffc'/>
+	<text transform='translate(225 232)'>95.8%</text>
+		<path d='M312 210h93v30H312z' fill='#fec'/>
+	<text transform='translate(318 232)'>94.7%</text>
+		<path d='M405 210h93v30H405z' fill='#eee'/>
+	<text transform='translate(411 232)'>69.0%</text>
+		<path d='M498 210h102v30H498z' fill='#eee'/>
+	<text transform='translate(504 232)'>51.5%</text>    
+	
+  <text transform='translate(4 262)'>franc</text>
+		<path d='M126 240h93v30H126z' fill='#fee'/>
+	<text transform='translate(132 262)'>89.8%</text>
+		<path d='M219 240h93v30H219z' fill='#fec'/>
+	<text transform='translate(225 262)'>92.0%</text>
+		<path d='M312 240h93v30H312z' fill='#fec'/>
+	<text transform='translate(318 262)'>90.5%</text>
+		<path d='M405 240h93v30H405z' fill='#eee'/>
+	<text transform='translate(411 262)'>65.9%</text>
+		<path d='M498 240h102v30H498z' fill='#eee'/>
+	<text transform='translate(504 262)'>52.9%</text>   
+	  
+	<g fill='#e0e0e0'>
+	  <path d='M0 0h600v1H0z'/>
+	  <path d='M0 30h600v1H0z'/>
+	  <path d='M0 60h600v1H0z'/>
+	  <path d='M0 90h600v1H0z'/>
+	  <path d='M0 120h600v1H0z'/>
+	  <path d='M0 150h600v1H0z'/>
+	  <path d='M0 180h600v1H0z'/>
+	  <path d='M0 210h600v1H0z'/>
+	  <path d='M0 240h600v1H0z'/>
+	  <path d='M0 270h600v1H0z'/>
+	</g>
+	<g x='0' y='0' font-size='16' font-weight='700'>
+	  <text transform='translate(130 21)'>
+		 <tspan>Tweets</tspan>
+	  </text>
+	  <text transform='translate(223 21)'>
+		 <tspan>Big test</tspan>
+	  </text>
+	  <text transform='translate(316 21)'>
+		 <tspan>Sentences</tspan>
+	  </text>
+	  <text transform='translate(409 21)'>
+		 <tspan>Word pairs</tspan>
+	  </text>
+	  <text font-size='15.4' transform='translate(502 21)'>
+		 <tspan>Single words</tspan>
+	  </text>
+	</g>
+  <path d='M0 0h1v270H0zm126 0h1v270h-1zm93 0h1v270h-1zm93 0h1v270h-1zm93 0h1v270h-1zm93 0h1v270h-1zm101 0h1v270h-1zM0 270h600v1H0z' fill='#e0e0e0'/>
+</svg>

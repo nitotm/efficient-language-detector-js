@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Demo</title>
+  </head>
+  <body>
+    <main>
+      <h1>Demo</h1>
+      <div id="demo">See results at the console.</div>
+    </main>
+    <!-- <script src="minified/eld.min.js"></script> -->
+    <script type="module">
+	  import { langDetector } from './src/languageDetector.js'
+
+	  // detect() expects an UTF-8 string, and returns an object, with a value named 'language', which will be either an ISO 639-1 code or false
+	  console.log(langDetector.detect('Hola, cómo te llamas?'))
+	  // {'language': 'es'}
+	  // {'language': false, 'error': 'Some error', 'scores'=>{}}
+
+	  // To get the best guess, deactivating minimum length, confidence threshold and also for benchmarking.
+	  langDetector.detect('To', { cleanText: false, checkConfidence: false, minByteLength: 0, minNgrams: 1 })
+     // cleanText: true, Removes Urls, domains, emails, alphanumerical & numbers
+	  
+	  // To retrieve the whole list of languages detected and their score, we will set returnScores to True, just once
+	  langDetector.returnScores = true
+	  console.log(langDetector.detect('How are you? Bien, gracias'))
+	  // {'language': 'en', 'scores': {'en': 0.32, 'es': 0.31, ...}}
+
+	  /*
+			To reduce the languages to be detected, there are 2 different options, they only need to be executed once.
+
+			This is the complete list on languages for ELD v1, using ISO 639-1 codes:
+			['am', 'ar', 'az', 'be', 'bg', 'bn', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'et', 'eu', 'fa', 'fi', 'fr', 'gu', 'he', 'hi', 'hr', 'hu', 'hy', 'is', 'it', 'ja', 'ka', 'kn', 'ko', 'ku', 'lo', 'lt', 'lv', 'ml', 'mr', 'ms', 'nl', 'no', 'or', 'pa', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'sq', 'sr', 'sv', 'ta', 'te', 'th', 'tl', 'tr', 'uk', 'ur', 'vi', 'yo', 'zh']
+	  */
+	  let langsSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
+
+	  // dynamicLangsSubset() Will execute the detector normally, but at the end will filter the excluded languages.
+	  langDetector.dynamicLangsSubset(langsSubset)
+	  // to remove the subset
+	  langDetector.dynamicLangsSubset(false)
+
+	  /*
+	  The optimal way to regularly use the same subset, will be using the second option:
+
+	  saveSubset() will download a new database of Ngrams with only the subset languages.
+			It is not included in the minified version. Also, if using the full module for client side, remove the import of 'saveLanguagesSubset.dev.js'
+			saveSubset() is also NOT included for Node.js, you would need to use a browser to download the Ngrams file
+			
+	  langDetector.saveSubset(langsSubset)
+
+	  And finally import the new file replacing the old Ngrams file at languageDetector.js
+			import {eld_ngrams} from './ngrams/ngrams-new-subset.js'
+	  You can also load other Ngram databases included like ngrams-L.js or ngrams-xs.js
+	  */
+    </script>
+  </body>
+</html>
