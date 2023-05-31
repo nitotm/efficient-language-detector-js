@@ -1,6 +1,6 @@
 {
   "name": "eld",
-  "version": "0.9.0",
+  "version": "0.9.2",
   "description": "Fast and accurate natural language detection. Detector written in Javascript. Efficient language detector, Nito-ELD, ELD.",
   "main": "src/languageDetector.js",
   "type": "module",
@@ -26,8 +26,5 @@
   "bugs": {
     "url": "https://github.com/nitotm/efficient-language-detector-js/issues"
   },
-  "homepage": "https://github.com/nitotm/efficient-language-detector-js#readme",
-  "dependencies": {
-    "eld": "^0.9.0"
-  }
+  "homepage": "https://github.com/nitotm/efficient-language-detector-js#readme"
 }
