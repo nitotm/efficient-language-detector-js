@@ -15,10 +15,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { languagesData } from './languagesData.js'
+import { languageData } from './languageData.js'
 import { eld_ngrams } from './ngrams/ngrams-m.js'
 import { uniRegex } from './unicode_regex.js'
-import { saveLanguagesSubset } from './saveLanguagesSubset.dev.js'
+import { saveLanguageSubset } from './saveLanguageSubset.dev.js'
 
 // ES2015
 export const langDetector = (function () {
@@ -45,7 +45,7 @@ export const langDetector = (function () {
     str = str.replace(/[hw]((ttps?:\/\/(www\.)?)|ww\.)([^\s/?\.#-]+\.?)+(\/\S*)?/gi, ' ')
     // Remove emails
     str = str.replace(/[a-zA-Z0-9.!$%&’+_`-]+@[A-Za-z0-9.-]+\.[A-Za-z0-9-]{2,64}/g, ' ')
-    // Remove domains
+    // Remove .com domains
     str = str.replace(rdomains, ' ')
     // Remove alphanumerical/number codes
     str = str.replace(/[a-zA-Z]*[0-9]+[a-zA-Z0-9]*/g, ' ')
@@ -60,7 +60,7 @@ export const langDetector = (function () {
       if (score === 0) {
         break
       }
-      scores[languagesData.langCodes[results[key][0]]] = score
+      scores[languageData.langCodes[results[key][0]]] = score
     }
     return scores
   }
@@ -95,7 +95,7 @@ export const langDetector = (function () {
 
   function calcScores (txtNgrams, numNgrams) {
     let bytes, ngramFrequency, relevancy, num_langs, frequency, lang, thisByte
-    let langScores = [...languagesData.langScore]
+    let langScores = [...languageData.langScore]
 
     for (bytes in txtNgrams) {
       frequency = txtNgrams[bytes]
@@ -128,18 +128,18 @@ export const langDetector = (function () {
     for (lang in langScores) {
       if (langScores[lang]) {
         // Javascript does Not guarantee object order, so a multiarray is used
-        results.push([parseInt(lang), langScores[lang] / resultDivisor]) // * languagesData.scoreNormalizer[lang];
+        results.push([parseInt(lang), langScores[lang] / resultDivisor]) // * languageData.scoreNormalizer[lang];
       }
     }
     return results
   }
 
-  function dynamicLangsSubset (langs) {
+  function dynamicLangSubset (langs) {
 
     if (langs) {
       subset = []
       for (let key in langs) {
-        let lang = languagesData.langCodes.indexOf(langs[key])
+        let lang = languageData.langCodes.indexOf(langs[key])
         if (lang) {
           subset.push(lang)
         }
@@ -156,7 +156,7 @@ export const langDetector = (function () {
 	 
   }
 
-  function filterLangsSubset (results) {
+  function filterLangSubset (results) {
     let subResults = []
     for (let key in results) {
       if (subset.indexOf(results[key][0]) > -1) {
@@ -248,7 +248,7 @@ export const langDetector = (function () {
     if (numNgrams >= minNgrams) {
       let results = calcScores(txtNgrams, numNgrams)
       if (subset) {
-        results = filterLangsSubset(results)
+        results = filterLangSubset(results)
       }
       results.sort((a, b) => b[1] - a[1])
 
@@ -257,8 +257,8 @@ export const langDetector = (function () {
         // Minimum confidence threshold.
         if (checkConfidence) {
           let next = (results.length > 1 ? results[1][0] : 0)
-          // A minimum of a 17% per ngram score from average
-          if (languagesData.avgScore[top_lang] * 0.17 > results[0][1] / numNgrams ||
+          // A minimum of a 24% per ngram score from average
+          if (languageData.avgScore[top_lang] * 0.24 > results[0][1] / numNgrams ||
             (0.01 > Math.abs(results[0][1] - next))) {
             return {
               'language': false,
@@ -269,11 +269,11 @@ export const langDetector = (function () {
         }
         if (!this.returnScores) {
           return {
-            'language': languagesData.langCodes[top_lang],
+            'language': languageData.langCodes[top_lang],
           }
         } else {
           return {
-            'language': languagesData.langCodes[top_lang], 'scores': getScores(results),
+            'language': languageData.langCodes[top_lang], 'scores': getScores(results),
           }
         }
       }
@@ -287,13 +287,13 @@ export const langDetector = (function () {
   }
 
   function saveSubset (langs) {
-    let langs_array = langDetector.dynamicLangsSubset(langs)
-    langDetector.dynamicLangsSubset(false)
-    saveLanguagesSubset.saveSubset(langs_array, eld_ngrams)
+    let langs_array = langDetector.dynamicLangSubset(langs)
+    langDetector.dynamicLangSubset(false)
+    saveLanguageSubset.saveSubset(langs_array, eld_ngrams)
   }
 
   return {
-    detect: detect, dynamicLangsSubset: dynamicLangsSubset, saveSubset: saveSubset,
+    detect: detect, dynamicLangSubset: dynamicLangSubset, saveSubset: saveSubset,
   }
 
 })()

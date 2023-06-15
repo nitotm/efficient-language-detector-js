@@ -13,7 +13,7 @@
     </main>
     <!-- <script src="../minified/eld.min.js"></script> -->
     <script type="module">
-	  import { languageDetector } from '../src/languageDetector.js'
+	  import { langDetector } from '../src/languageDetector.js'
 
 	  function parse_txt (text) {
 		 let lines = text.split('\n')
@@ -26,22 +26,22 @@
 	  }
 
 	  function do_test (file, tests) {
-		 let count = 0
+		 let correct = 0
 		 let fails = 0
 		 let len = tests.length
 		 const start = Date.now()
 
 		 tests.forEach(function (testl) {
-			let key = languageDetector.detect(testl[0],
+			let key = langDetector.detect(testl[0],
 			  { cleanText: false, checkConfidence: false, minByteLength: 0, minNgrams: 1 }).language
 			if (key === testl[1]) {
-			  count++
+			  correct++
 			} else {
 			  fails++
 			}
 		 })
 		 const end = Date.now()
-		 console.log(file + ' - Correct rate: ' + (Math.round((count / len) * 10000) / 100) + '%' + ' - Time: ' +
+		 console.log(file + ' - Correct rate: ' + (Math.round((correct / len) * 10000) / 100) + '%' + ' - Time: ' +
 			((end - start) / 1000) + ' sec.')
 	  }
 

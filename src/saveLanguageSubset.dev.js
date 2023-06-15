@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-export const saveLanguagesSubset = (function () {
+export const saveLanguageSubset = (function () {
 
   function saveSubset (langs_array, eld_ngrams) {
 
