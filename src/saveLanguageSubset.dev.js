@@ -1,56 +1,69 @@
 ﻿/*
-	Copyright 2023 Nito T.M.
-Author URL: https://github.com/nitotm
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Copyright 2023 Nito T.M.
+License https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
+Author Nito T.M. (https://github.com/nitotm)
+Package npmjs.com/package/eld
 */
 
+import { isoLanguages } from './isoLanguages.js'
+
 export const saveLanguageSubset = (function () {
-
-  function saveSubset (langs_array, eld_ngrams) {
-
-    if (!langs_array) {
+  /**
+   * Creates a ngrams database file download, only with the languages included in the langArray subset
+   *
+   * @param {Array} langArray
+   * @param {Object} ngrams
+   * @param {Object} defaultLanguages
+   * @param {string} type
+   */
+  function saveSubset (langArray, ngrams, defaultLanguages, type) {
+    // langArray languages are already validated by dynamicLangSubset()
+    if (!langArray.length) {
       return 'No languages found'
     }
-    let defaultNgrams = JSON.parse(JSON.stringify(eld_ngrams))
-    let file = 'ngrams_' + langs_array.length + '_' + Date.now() + '.js'
+    let newNgrams = JSON.parse(JSON.stringify(ngrams)) // Deep copy of object
+    const file = 'ngrams' + type + '-' + langArray.length + '_' + Date.now() + '.js'
 
-    for (let ngram in defaultNgrams) {
-
-      for (let id in defaultNgrams[ngram]) {
-        if (langs_array.indexOf(parseInt(id)) === -1) {
-          delete defaultNgrams[ngram][id]
+    for (let ngram in newNgrams) {
+      for (let id in newNgrams[ngram]) {
+        if (langArray.indexOf(parseInt(id)) === -1) {
+          delete newNgrams[ngram][id]
         }
       }
 
-      if (Object.keys(defaultNgrams[ngram]).length === 0) {
-        delete defaultNgrams[ngram]
+      if (Object.keys(newNgrams[ngram]).length === 0) {
+        delete newNgrams[ngram]
       }
     }
-    download('export const eld_ngrams = ' + ngram_export(defaultNgrams) + ';', file, 'js')
+
+    download('// Copyright 2023 Nito T.M. [ Apache 2.0 Licence https://www.apache.org/licenses/LICENSE-2.0 ]\n' +
+      'export const ngramsData = {\n' +
+      '   type: "' + type + '",\n' +
+      '   languages: ' + JSON.stringify(isoLanguages(langArray, defaultLanguages)) + ',\n' +
+      '   isSubset: true,\n' +
+      '   ngrams: ' + ngramExport(newNgrams) + '\n' +
+      '}', file, 'js')
   }
 
-  function ngram_export (object) {
-    if (typeof object === 'object' && object) {
+  /**
+   * @param {Object} ngrams
+   * @returns {string}
+   */
+  function ngramExport (ngrams) {
+    if (typeof ngrams === 'object' && ngrams) {
       let toImplode = []
-      for (const property in object) {
-        toImplode.push('\'' + property.replace(/'/g, '\\\'') + '\':' + join_nums(object[property]))
+      for (const property in ngrams) {
+        toImplode.push('\'' + property.replace(/'/g, '\\\'') + '\':' + joinNumbers(ngrams[property]))
       }
       return '{' + toImplode.join(',') + '}'
     }
   }
 
-  function join_nums (obj) {
+  /**
+   * @param {Object} obj
+   * @returns {string}
+   */
+  function joinNumbers (obj) {
     let toImplode = []
     for (const property in obj) {
       toImplode.push(property + ':' + obj[property])
@@ -58,17 +71,26 @@ export const saveLanguageSubset = (function () {
     return '{' + toImplode.join(',') + '}'
   }
 
+  /**
+   * Triggers file download at the web browser
+   *
+   * @param {string} data
+   * @param {string} filename
+   * @param {string} type
+   */
   function download (data, filename, type) {
-    let file = new Blob([data], { type: type })
+    const file = new Blob([data], { type: type })
     if (typeof window === 'undefined') {
       console.log('saveSubset() is only available at the Web Browser')
       return
     }
-    if (window.navigator.msSaveOrOpenBlob) { // IE10+
+    if (window.navigator.msSaveOrOpenBlob) {
+      // IE10+
       window.navigator.msSaveOrOpenBlob(file, filename)
-    } else { // Others
-      let a = document.createElement('a'),
-        url = URL.createObjectURL(file)
+    } else {
+      // Others
+      let a = document.createElement('a')
+      let url = URL.createObjectURL(file)
       a.href = url
       a.download = filename
       document.body.appendChild(a)
@@ -81,7 +103,6 @@ export const saveLanguageSubset = (function () {
   }
 
   return {
-    saveSubset: saveSubset,
+    saveSubset: saveSubset
   }
-
 })()
