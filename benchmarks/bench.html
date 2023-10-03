@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Test</title>
+    <title>Benchmark</title>
   </head>
   <body>
     <main>
-      <h1>Test</h1>
+      <h1>Benchmark</h1>
       <div id="demo">See results at the console.</div>
     </main>
-    <!-- <script src="../minified/eld.min.js"></script> -->
     <script type="module">
-	  import { langDetector } from '../src/languageDetector.js'
+	  import { eld } from '../src/languageDetector.js'
 
 	  function parse_txt (text) {
 		 let lines = text.split('\n')
@@ -32,7 +31,7 @@
 		 const start = Date.now()
 
 		 tests.forEach(function (testl) {
-			let key = langDetector.detect(testl[0],
+			let key = eld.detect(testl[0],
 			  { cleanText: false, checkConfidence: false, minByteLength: 0, minNgrams: 1 }).language
 			if (key === testl[1]) {
 			  correct++

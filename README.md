@@ -14,8 +14,6 @@ Efficient language detector (*Nito-ELD* or *ELD*) is a fast and accurate languag
 It's 100% Javascript (vanilla), easy installation and no dependencies.  
 ELD is also available in [Python](https://github.com/nitotm/efficient-language-detector-py) and [PHP](https://github.com/nitotm/efficient-language-detector).
 
-> This is the first version of a port made from the original version in PHP, the structure might not be definitive, the code could be optimized.
-
 1. [Install](#install)
 2. [How to use](#how-to-use)
 3. [Benchmarks](#benchmarks)
@@ -36,69 +34,56 @@ $ npm install eld
 
 - At Node.js REPL
 ```javascript
-const { langDetector } = await import('eld')
+const { eld } = await import('eld')
 ```
 - At Node.js
 ```javascript
-import {langDetector} from 'eld' // use .mjs extension for version <18
+import { eld } from 'eld' // use .mjs extension for version <18
 ```
 - At the Web Browser
+
 ```html
-<script type="module">
-  import {langDetector} from './languageDetector.js' // Update path.
-/* code */</script>
+
+<script type="module" charset="utf-8">
+    import { eld } from './src/languageDetector.js' // Update path.
+    /* code */
+</script>
 ```
 - To load the minified version, which is not a module
 ```html
-<script src="minified/eld.min.js"></script>
+<script src="minified/eld.M60.min.js" charset="utf-8"></script>
 ```
 
 ### Usage
 
+`detect()` expects a UTF-8 string, and returns an object, with a 'language' variable, with a ISO 639-1 code or empty string
 ```javascript
-console.log( langDetector.detect('Hola, cómo te llamas?') )
-```
-`detect()` expects a UTF-8 string, and returns a list, with a value named 'language', which will be either an *ISO 639-1 code* or `false`
-```
-{'language': 'es'}
-{'language': False, 'error': 'Some error', 'scores': {}}
-```
+console.log( eld.detect('Hola, cómo te llamas?') )
+// { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
+// returns { language: string, getScores(): Object, isReliable(): boolean } 
 
-- To get the best guess, turn off minimum length & confidence threshold; also used for benchmarking.
-```javascript
-langDetector.detect('To', {cleanText: false, checkConfidence: false, minByteLength: 0, minNgrams: 1})
-// cleanText: true, Removes Urls, domains, emails, alphanumerical & numbers
+console.log( eld.detect('Hola, cómo te llamas?').language )
+// 'es'
 ```
-
-- To retrieve the scores of all languages detected, we will set `returnScores` to `true`, just once
-```javascript
-langDetector.returnScores = true
-langDetector.detect('How are you? Bien, gracias')
-// {'language': 'en', 'scores': {'en': 0.32, 'es': 0.31, ...}}
-```
-
-
-- To reduce the languages to be detected, there are 2 different options, they only need to be executed once. (Check available [languages](#languages) below)
+ - To reduce the languages to be detected, there are 2 options, they only need to be executed once. (Check available [languages](#languages) below)
 ```javascript
 let langSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
 
-// with dynamicLangSubset() the detector executes normally, and then filters excluded languages
-langDetector.dynamicLangSubset(langSubset)
-
+// Option 1. When we set dynamicLangSubset(), detect() executes normally, but finally filters the excluded languages
+eld.dynamicLangSubset(langSubset) // Returns an Object with the validated languages of the subset
 // to remove the subset
-langDetector.dynamicLangSubset(false)
-```
+eld.dynamicLangSubset(false)
 
-The optimal way to regularly use the same subset, will be to first use `saveSubset()` to download a new database of Ngrams with only the subset languages.
+// Option 2. The optimal way to regularly use the same subset, will be using saveSubset() to download the new database
+eld.saveSubset(langSubset) // ONLY for the Web Browser, and not included at minified files
+// Then we can dynamically load any Ngrams database saved at src/ngrams/, including subsets. Returns true if success
+await eld.loadNgrams('ngramsL60.js') // eld.loadNgrams('ngramsL60.js').then((loaded) => { if (loaded) { } })
+// To change the preloaded database on import, edit the filename at scr/languageDetector.js: loadNgrams('ngramsM60.js')
+```
+- Also, we can get the current status of eld: languages, database type and subset
 ```javascript
-langDetector.saveSubset(langSubset) // ONLY for the Web Browser; not included at minified files
+  console.log( eld.info() )
 ```
-
-And finally import the new file replacing the old Ngrams file at *languageDetector.js*
-```javascript
-import {eld_ngrams} from './ngrams/ngrams-subset.js' // Or load other files ngrams-L.js, ngrams-xs.js
-```
-
 ## Benchmarks
 
 I compared *ELD* with a different variety of detectors, since the interesting part is the algorithm.
@@ -129,7 +114,7 @@ These are the results, first, accuracy and then execution time.
 | **CLD3**            | 92.2%        | 95.8%        | 94.7%        | 69.0%        | 51.5%        |
 | **franc**           | 89.8%        | 92.0%        | 90.5%        | 65.9%        | 52.9%        |
 -->
-<img alt="accuracy table" width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/benchmarks/table_accuracy_js.svg">
+<img alt="accuracy table" width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/misc/table_accuracy_js.svg">
 
 <!--- Time table
 |                     | Tweets       | Big test     | Sentences    | Word pairs   | Single words |
@@ -144,7 +129,7 @@ These are the results, first, accuracy and then execution time.
 | **franc**           |     1.2"     |      8"      |      7.8"    |     2.8"     |     2"       |
 | **Nito-ELD-php**    |     0.31"    |      2.5"    |      2.2"    |     0.66"    |     0.48"    |
 -->
-<img alt="time table" width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/benchmarks/table_time_js.svg">
+<img alt="time table" width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/misc/table_time_js.svg">
 
 <sup style="color:#08e">1.</sup> <sup style="color:#777">Lingua could have a small advantage as it participates with 54 languages, 6 less.</sup>  
 <sup style="color:#08e">2.</sup> <sup style="color:#777">CLD2 and CLD3, return a list of languages, the ones not included in this test where discarded, but usually they return one language, I believe they have a disadvantage. 
@@ -160,7 +145,7 @@ The XS version only weights 865kb, when gzipped it's only 245kb. The standard ve
 
 Here is the average, per benchmark, of Tweets, Big test & Sentences.
 
-![Sentences tests average](https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/benchmarks/sentences-tests-avg-js.png)
+![Sentences tests average](https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/misc/sentences-tests-avg-js.png)
 <!--- Sentences average
 |                     | Time         | Accuracy     |
 |:--------------------|:------------:|:------------:|
@@ -182,7 +167,7 @@ These are the *ISO 639-1 codes* of the 60 supported languages for *Nito-ELD* v1
 
 Full name languages:
 
-> 'Amharic', 'Arabic', 'Azerbaijani (Latin)', 'Belarusian', 'Bulgarian', 'Bengali', 'Catalan', 'Czech', 'Danish', 'German', 'Greek', 'English', 'Spanish', 'Estonian', 'Basque', 'Persian', 'Finnish', 'French', 'Gujarati', 'Hebrew', 'Hindi', 'Croatian', 'Hungarian', 'Armenian', 'Icelandic', 'Italian', 'Japanese', 'Georgian', 'Kannada', 'Korean', 'Kurdish (Arabic)', 'Lao', 'Lithuanian', 'Latvian', 'Malayalam', 'Marathi', 'Malay (Latin)', 'Dutch', 'Norwegian', 'Oriya', 'Punjabi', 'Polish', 'Portuguese', 'Romanian', 'Russian', 'Slovak', 'Slovene', 'Albanian', 'Serbian (Cyrillic)', 'Swedish', 'Tamil', 'Telugu', 'Thai', 'Tagalog', 'Turkish', 'Ukrainian', 'Urdu', 'Vietnamese', 'Yoruba', 'Chinese'
+> Amharic, Arabic, Azerbaijani (Latin), Belarusian, Bulgarian, Bengali, Catalan, Czech, Danish, German, Greek, English, Spanish, Estonian, Basque, Persian, Finnish, French, Gujarati, Hebrew, Hindi, Croatian, Hungarian, Armenian, Icelandic, Italian, Japanese, Georgian, Kannada, Korean, Kurdish (Arabic), Lao, Lithuanian, Latvian, Malayalam, Marathi, Malay (Latin), Dutch, Norwegian, Oriya, Punjabi, Polish, Portuguese, Romanian, Russian, Slovak, Slovene, Albanian, Serbian (Cyrillic), Swedish, Tamil, Telugu, Thai, Tagalog, Turkish, Ukrainian, Urdu, Vietnamese, Yoruba, Chinese
 
 
 ## Future improvements
