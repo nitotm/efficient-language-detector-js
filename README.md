@@ -69,16 +69,18 @@ console.log( eld.detect('Hola, cómo te llamas?').language )
 ```javascript
 let langSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
 
-// Option 1. When we set dynamicLangSubset(), detect() executes normally, but finally filters the excluded languages
+// Option 1 
+// Setting dynamicLangSubset(), detect() executes normally but finally filters the excluded languages
 eld.dynamicLangSubset(langSubset) // Returns an Object with the validated languages of the subset
 // to remove the subset
 eld.dynamicLangSubset(false)
 
-// Option 2. The optimal way to regularly use the same subset, will be using saveSubset() to download the new database
+// Option 2
+// The optimal way to regularly use the same subset, is using saveSubset() to download a new database
 eld.saveSubset(langSubset) // ONLY for the Web Browser, and not included at minified files
-// Then we can dynamically load any Ngrams database saved at src/ngrams/, including subsets. Returns true if success
-await eld.loadNgrams('ngramsL60.js') // eld.loadNgrams('ngramsL60.js').then((loaded) => { if (loaded) { } })
-// To change the preloaded database on import, edit the filename at scr/languageDetector.js: loadNgrams('ngramsM60.js')
+// We can load any Ngrams database saved at src/ngrams/, including subsets. Returns true if success
+await eld.loadNgrams('ngramsL60.js') // eld.loadNgrams('file').then((loaded) => { if (loaded) { } })
+// To modify the preloaded database, edit the filename loadNgrams('filename') at languageDetector.js
 ```
 - Also, we can get the current status of eld: languages, database type and subset
 ```javascript
