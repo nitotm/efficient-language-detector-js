@@ -54,10 +54,10 @@ function detect (text) {
   let results = calculateScores(byteNgrams, numNgrams)
   let language = ''
 
+  if (subset) {
+    results = filterLangSubset(results)
+  }
   if (results.length > 0) {
-    if (subset) {
-      results = filterLangSubset(results)
-    }
     results.sort((a, b) => b[1] - a[1])
     language = languageData.langCodes[results[0][0]]
   }
