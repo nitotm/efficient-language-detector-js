@@ -12,17 +12,22 @@ import { isoLanguages } from './isoLanguages.js'
 import { LanguageResult } from './LanguageResult.js'
 import { saveLanguageSubset } from './saveLanguageSubset.dev.js'
 
-await loadNgrams('ngramsM60.js')
 
 // Project is ES2015
 const eld = (function () {
+	// Add initialization function
+	async function init(size = 'M') {
+			await loadNgrams(size);
+	}
+
   return {
-    detect: detect,
-    cleanText: cleanText,
-    dynamicLangSubset: dynamicLangSubset,
-    saveSubset: saveSubset,
-    loadNgrams: loadNgrams,
-    info: info
+    init,
+    detect,
+    cleanText,
+    dynamicLangSubset,
+    saveSubset,
+    loadNgrams,
+    info,
   }
 })()
 
