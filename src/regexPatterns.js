@@ -5,7 +5,16 @@ const unicodeRegex = {
   },
 }
 
-// separators matches all languages word separators and special characters
-export const separators = new RegExp('[^' + unicodeRegex.L.bmp + ']+(?<![\\x27\\x60\\u2019])', 'gu')
+let separatorsRegex;
+
+try {
+  // Use advanced regex if supported (captures contractions like “don’t” correctly)
+  separatorsRegex = new RegExp(`[^${unicodeRegex.L.bmp}]+(?<![\\x27\\x60\\u2019])`, 'gu');
+} catch (e) {
+  console.warn("Browser doesn't support lookbehind. Falling back to basic token split.");
+  separatorsRegex = new RegExp(`[^${unicodeRegex.L.bmp}]+`, 'gu');
+}
+
+export const separators = separatorsRegex;
 
 export const matchDomains = new RegExp('([A-Za-z0-9-]+.)+com(/S*|[^' + unicodeRegex.L.bmp + '])', 'g')
