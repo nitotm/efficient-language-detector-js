@@ -16,11 +16,11 @@
 	  import { eld } from './src/languageDetector.js'
 
 	  // detect() expects a UTF-8 string, returns an object, with a 'language' variable : ISO 639-1 code or empty string
-	  console.log( eld.detect('Hola, cómo te llamas?') )
+	  console.log('Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?') )
 	  // { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
 	  // { language: string, getScores(): Object, isReliable(): boolean }
 
-	  console.log( eld.detect('Hola, cómo te llamas?').language )
+	  console.log('Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?').language )
 	  // 'es'
 
 	  /*
