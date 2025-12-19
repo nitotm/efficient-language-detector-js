@@ -6,7 +6,7 @@ Package npmjs.com/package/eld
 */
 
 import { avgScore } from './avgScore.js'
-// import { ngramsData } from "./ngrams/medium.60.js"
+// import { ngramsData } from "./ngrams/medium.js"
 
 export const languageData = {
   langCodes: {}, langScore: [], ngrams: {}, type: '', avgScore: avgScore

@@ -1,7 +1,7 @@
 import { eld } from '../src/languageDetector.js'
 import runTests from './testRunner.js'
 
-await eld.init("large");
+await eld.init("medium");
 
 let txtFile = (typeof window !== 'undefined'
   ? '..'
@@ -69,7 +69,7 @@ const testCases = [
   },
 
   {
-    name: 'Accuracy test: ngrams-m.js + big-test.txt', assert: '>', compare: 99.4, func: function () {
+    name: 'Accuracy test: medium.js + big-test.txt', assert: '>', compare: 99.4, func: function () {
       let correct = 0
       let fails = 0
       const lines = bigTest.split("\n")
