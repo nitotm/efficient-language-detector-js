@@ -1,7 +1,7 @@
 import { eld } from '../src/languageDetector.js'
 import runTests from './testRunner.js'
 
-await eld.init("L");
+await eld.init("large");
 
 let txtFile = (typeof window !== 'undefined'
   ? '..'
