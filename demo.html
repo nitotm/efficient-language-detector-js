@@ -54,7 +54,7 @@
 
       // We can dynamically load any Ngrams database saved at src/ngrams/, including subsets. Returns true if success
       await eld.loadNgrams('medium') // Will not remove any active dynamic subset
-      // eld.loadNgrams('ngramsL60.js').then((loaded) => { if (loaded) { /* code */ } })
+      // eld.loadNgrams('medium').then((loaded) => { if (loaded) { /* code */ } })
 
       // To change the preloaded database on import, edit the file at scr/languageDetector.js: loadNgrams('ngramsM60.js')
       // if you believe eld should change this database preload behavior, comment at gitHub /discussions

@@ -17,7 +17,8 @@ export const languageData = {
  * @returns {boolean|undefined} true if file was loaded
  */
 export async function loadNgrams(size) {
-  return import('./ngrams/' + size.toLowerCase() + '.60.js').then((module) => {
+  let filename = size.replace(/\.js$/, '')
+  return import('./ngrams/' + filename + '.js').then((module) => {
     setNgrams(module.ngramsData)
     if (languageData.type) {
       return true

@@ -82,7 +82,7 @@ eld.dynamicLangSubset(false)
 // The optimal way to regularly use the same subset, is using saveSubset() to download a new database
 eld.saveSubset(langSubset) // ONLY for the Web Browser, and not included at minified files
 // We can load any Ngrams database saved at src/ngrams/, including subsets. Returns true if success
-await eld.loadNgrams('ngramsL60.js') // eld.loadNgrams('file').then((loaded) => { if (loaded) { } })
+await eld.loadNgrams('medium') // eld.loadNgrams('file').then((loaded) => { if (loaded) { } })
 // To modify the preloaded database, edit the filename loadNgrams('filename') at languageDetector.js
 ```
 - Also, we can get the current status of eld: languages, database type and subset
