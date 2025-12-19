@@ -1,6 +1,8 @@
 import { eld } from '../src/languageDetector.js'
 import runTests from './testRunner.js'
 
+await eld.init("L");
+
 let txtFile = (typeof window !== 'undefined'
   ? '..'
   : 'https://github.com/nitotm/efficient-language-detector-js/raw/main') + '/benchmarks/big-test.txt' // Node or Web
@@ -70,9 +72,9 @@ const testCases = [
     name: 'Accuracy test: ngrams-m.js + big-test.txt', assert: '>', compare: 99.4, func: function () {
       let correct = 0
       let fails = 0
-      const lines = bigTest.split('\n')
+      const lines = bigTest.split("\n")
       lines.forEach(function (line) {
-        let parts = line.split('\t')
+        let parts = line.split("\t")
         if (eld.detect(parts[1]).language === parts[0]) {
           correct++
         } else {
@@ -86,4 +88,4 @@ const testCases = [
     },
   }]
 
-runTests(testCases)
+runTests(testCases);

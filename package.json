@@ -4,6 +4,7 @@
   "description": "Fast and accurate natural language detection. Detector written in Javascript. Efficient language detector, Nito-ELD, ELD.",
   "main": "src/languageDetector.js",
   "type": "module",
+  "types": "index.d.ts",  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nitotm/efficient-language-detector-js.git"

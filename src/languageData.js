@@ -16,8 +16,8 @@ export const languageData = {
  * @param {string} file File inside /ngrams/, with ELD ngrams data format
  * @returns {boolean|undefined} true if file was loaded
  */
-export async function loadNgrams(file) {
-  return await import('./ngrams/' + file ).then((module) => {
+export async function loadNgrams(size) {
+  return import('./ngrams/' + size.toUpperCase() + '.60.js').then((module) => {
     setNgrams(module.ngramsData)
     if (languageData.type) {
       return true
