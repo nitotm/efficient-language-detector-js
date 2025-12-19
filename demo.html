@@ -15,7 +15,7 @@
     <script type="module">
 	  import { eld } from './src/languageDetector.js'
 
-	  // Initialize database, selecting size: 'extrasmall', 'small', 'medium', 'large'
+	  // Initialize database, select file: 'extrasmall', 'small', 'medium', 'large' or subsets
 	  await eld.init('large')
 
 	  // detect() expects a UTF-8 string, returns an object, with a 'language' variable : ISO 639-1 code or empty string
