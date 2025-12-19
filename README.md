@@ -58,6 +58,9 @@ import { eld } from 'eld' // use .mjs extension for version <18
 
 `detect()` expects a UTF-8 string, and returns an object, with a 'language' variable, with a ISO 639-1 code or empty string
 ```javascript
+// Initialize database, selecting size: 'extrasmall', 'small', 'medium', 'large'
+await eld.init('large')
+	  
 console.log( eld.detect('Hola, cómo te llamas?') )
 // { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
 // returns { language: string, getScores(): Object, isReliable(): boolean } 

@@ -6,7 +6,7 @@ Package npmjs.com/package/eld
 */
 
 import { avgScore } from './avgScore.js'
-// import { ngramsData } from "./ngrams/ngramsM60.js"
+// import { ngramsData } from "./ngrams/medium.60.js"
 
 export const languageData = {
   langCodes: {}, langScore: [], ngrams: {}, type: '', avgScore: avgScore
@@ -17,7 +17,7 @@ export const languageData = {
  * @returns {boolean|undefined} true if file was loaded
  */
 export async function loadNgrams(size) {
-  return import('./ngrams/' + size.toUpperCase() + '.60.js').then((module) => {
+  return import('./ngrams/' + size.toLowerCase() + '.60.js').then((module) => {
     setNgrams(module.ngramsData)
     if (languageData.type) {
       return true

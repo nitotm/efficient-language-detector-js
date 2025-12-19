@@ -16,7 +16,7 @@ import { saveLanguageSubset } from './saveLanguageSubset.dev.js'
 // Project is ES2015
 const eld = (function () {
 	// Add initialization function
-	async function init(size = 'M') {
+	async function init(size = 'medium') {
 			await loadNgrams(size);
 	}
 
