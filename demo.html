@@ -22,10 +22,14 @@
 	  console.log( 'Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?') )
 	  // { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
 	  // { language: string, getScores(): Object, isReliable(): boolean }
+	  // isReliable(threshold = 0.75) can take a threshold ratio 0-1. A higher threshold will make check more strict.
 
 	  console.log( 'Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?').language )
 	  // 'es'
 
+     console.log( 'getScores', eld.detect('Hola, cómo te llamas?').getScores() )
+     console.log( 'isReliable', eld.detect('Hola, cómo te llamas?').isReliable() )
+		
 	  /*
 	  * To reduce the languages to be detected, there are 2 options, they only need to be executed once.
 	  *  This is the complete list on languages for ELD v1, using ISO 639-1 codes:

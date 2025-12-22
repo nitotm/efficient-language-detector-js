@@ -46,7 +46,7 @@ let doCleanText = false
  * @returns {{language: string, getScores(): Object, isReliable(): boolean}} class LanguageResult
  */
 function detect (text) {
-  if (typeof text !== 'string') return new LanguageResult('', 0, 0,{})
+  if (typeof text !== 'string') return new LanguageResult('', [], 0, {})
 
   if (doCleanText) {
     // Removes Urls, emails, alphanumerical & numbers
@@ -62,11 +62,14 @@ function detect (text) {
   if (subset) {
     results = filterLangSubset(results)
   }
-  if (results.length > 0) {
-    results.sort((a, b) => b[1] - a[1])
-    language = languageData.langCodes[results[0][0]]
-  }
-  return new LanguageResult(language, results, numNgrams, languageData.langCodes)
+  
+  let langID = getMaxLang(results)
+  if (langID !== false) { 
+	 language = languageData.langCodes[langID]
+	 return new LanguageResult(language, results, numNgrams, languageData.langCodes)
+  } 
+	 
+  return new LanguageResult('', [], 0, {})
 }
 
 /**
@@ -74,7 +77,7 @@ function detect (text) {
  *
  * @param {boolean} bool
  */
-function cleanText (bool) {
+function cleanText(bool) {
   doCleanText = Boolean(bool)
 }
 
@@ -84,7 +87,7 @@ function cleanText (bool) {
  * @param {string} str
  * @returns {string}
  */
-function getCleanTxt (str) {
+function getCleanTxt(str) {
   // Remove URLS
   str = str.replace(/[hw]((ttps?:\/\/(www\.)?)|ww\.)([^\s/?.#-]+\.?)+(\/\S*)?/gi, ' ')
   // Remove emails
@@ -100,7 +103,7 @@ function getCleanTxt (str) {
  * @param {string} text
  * @returns {Array}
  */
-function textProcessor (text) {
+function textProcessor(text) {
   text = text.substring(0, 1000)
   // Normalize special characters/word separators
   text = text.replace(separators, ' ')
@@ -114,7 +117,7 @@ function textProcessor (text) {
  * @param {Array} words
  * @returns {Object}
  */
-function getByteNgrams (words) {
+function getByteNgrams(words) {
   let byteNgrams = {}
   let countNgrams = 0
   let thisBytes
@@ -126,19 +129,14 @@ function getByteNgrams (words) {
     if (len > 70) {
       len = 70
     }
-
+	 // 4 bytes ngram length, 3 bytes stride
     for (j = 0; j + 4 < len; j += 3, ++countNgrams) {
       thisBytes = (j === 0 ? ' ' : '') + word.substring(j, j + 4)
-      byteNgrams[thisBytes] = typeof byteNgrams[thisBytes] !== 'undefined' ? byteNgrams[thisBytes] + 1 : 1
+      byteNgrams[thisBytes] = true
     }
     thisBytes = (j === 0 ? ' ' : '') + word.substring(len !== 3 ? len - 4 : 0) + ' '
-    byteNgrams[thisBytes] = typeof byteNgrams[thisBytes] !== 'undefined' ? byteNgrams[thisBytes] + 1 : 1
+    byteNgrams[thisBytes] = true
     countNgrams++
-  }
-  // Frequency is multiplied by 15000 at the ngrams database. A reduced number (13200) seems to work better.
-  // Linear formulas were tried, decreasing the multiplier for fewer ngram strings, no meaningful improvement.
-  for (let bytes in byteNgrams) {
-    byteNgrams[bytes] = (byteNgrams[bytes] / countNgrams) * 13200
   }
   return byteNgrams
 }
@@ -150,45 +148,19 @@ function getByteNgrams (words) {
  * @param {number} numNgrams
  * @returns {Array}
  */
-function calculateScores (byteNgrams, numNgrams) {
-  let bytes, globalFrequency, relevancy, langCount, frequency, lang, thisByte
+function calculateScores(byteNgrams, numNgrams) {
+  let bytes, lang, thisByte
   let langScore = [...languageData.langScore]
-
+  let baseNgramScore = 53; // In order to reduce DB size we subtract minimum score
   for (bytes in byteNgrams) {
-    frequency = byteNgrams[bytes]
+    //frequency = byteNgrams[bytes]
     thisByte = languageData.ngrams[bytes]
-
-    if (thisByte) {
-      langCount = Object.keys(thisByte).length
-      // Ngram score multiplier, the fewer languages found the more relevancy. Formula can be fine-tuned.
-      if (langCount === 1) {
-        relevancy = 27 // Handpicked relevance multiplier, trial-error
-      } else {
-        if (langCount < 16) {
-          relevancy = (16 - langCount) / 2 + 1
-        } else {
-          relevancy = 1
-        }
-      }
       // Most time-consuming loop, do only the strictly necessary inside
       for (lang in thisByte) {
-        globalFrequency = thisByte[lang]
-        langScore[lang] += (frequency > globalFrequency ? globalFrequency / frequency : frequency / globalFrequency) *
-          relevancy + 2
+         langScore[lang] += thisByte[lang] + baseNgramScore;
       }
     }
-  }
-
-  // This divisor will produce a final score between 0 - ~1, score could be >1. Can be improved.
-  let resultDivisor = numNgrams * 3.2
-  let results = []
-  for (lang in langScore) {
-    if (langScore[lang]) {
-      // Javascript does Not guarantee object order, so a multi-array is used
-      results.push([parseInt(lang), langScore[lang] / resultDivisor]) // * languageData.scoreNormalizer[lang];
-    }
-  }
-  return results
+  return langScore
 }
 
 /**
@@ -201,7 +173,7 @@ function calculateScores (byteNgrams, numNgrams) {
  * @param {string} str
  * @returns {Array}
  */
-function strToUtf8Bytes (str) {
+function strToUtf8Bytes(str) {
   let encoded = ''
   let words = []
   let countBytes = 0
@@ -256,14 +228,15 @@ function strToUtf8Bytes (str) {
  * @param {Array} results
  * @returns {Array}
  */
-function filterLangSubset (results) {
-  let subResults = []
-  for (let key in results) {
-    if (subset.indexOf(results[key][0]) > -1) {
-      subResults.push(results[key])
-    }
+function filterLangSubset(results) {
+  let subResults = [];
+  // const keepSet = new Set(subset);
+  for (let i = 0; i < results.length; i++) {
+    if (results[i] > 0 && subset.indexOf(i) > -1 ) { // keepSet.has(i)
+	   subResults[i] = results[i];
+	 }
   }
-  return subResults
+  return subResults;
 }
 
 /**
@@ -273,7 +246,7 @@ function filterLangSubset (results) {
  * @param {Array|boolean} languages
  * @returns {Array|boolean}
  */
-function makeSubset (languages) {
+function makeSubset(languages) {
   if (languages) {
     subset = []
     for (let key in languages) {
@@ -301,7 +274,7 @@ function makeSubset (languages) {
  * @param {Array|boolean} languages
  * @returns {Object} Returns list of the validated languages for the new subset
  */
-function dynamicLangSubset (languages) {
+function dynamicLangSubset(languages) {
   let result = makeSubset(languages)
   if (result) {
       return isoLanguages(result, languageData.langCodes)
@@ -315,10 +288,24 @@ function dynamicLangSubset (languages) {
  *
  * @param {Array} languages
 */
-function saveSubset (languages) {
+function saveSubset(languages) {
   const langArray = makeSubset(languages)
   makeSubset(false) // remove the global subset, we only need the filtered langArray
   saveLanguageSubset.saveSubset(langArray, languageData.ngrams, languageData.langCodes, languageData.type)
+}
+
+function getMaxLang(obj) {
+	let maxKey = false;
+	let maxVal = 0;
+
+	for (const key in obj) {
+	  const val = obj[key];
+	  if (val > 0 && val > maxVal) {
+		 maxVal = val;
+		 maxKey = key;
+	  }
+	}
+	return maxKey;
 }
 
 function info() {

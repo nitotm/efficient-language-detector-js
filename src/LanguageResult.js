@@ -1,5 +1,5 @@
 ﻿/*
-Copyright 2023 Nito T.M.
+Copyright 2025 Nito T.M.
 License https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
 Author Nito T.M. (https://github.com/nitotm)
 Package npmjs.com/package/eld
@@ -17,10 +17,17 @@ export class LanguageResult {
    * @param {Object} langCodes
    * @memberof LanguageResult
    */
-  constructor (language, results, numNgrams, langCodes) {
+  constructor(language, results, numNgrams, langCodes) {
     this.language = language
-    this.getScores = () => getScores(results, langCodes) // returns object
-    this.isReliable = () => isReliable(results, numNgrams, language) // returns boolean
+	 let orderedResults = null;
+	 this.getScores = () => {
+		orderedResults = orderedResults || orderAndScale(results, numNgrams);
+      return getScores(orderedResults, langCodes, numNgrams) // returns object
+    };
+	 this.isReliable = (thresholdRatio = 0.75) => {
+		orderedResults = orderedResults || orderAndScale(results, numNgrams);
+      return isReliable(orderedResults, language, numNgrams, thresholdRatio) // returns boolean
+    };
   }
 }
 
@@ -30,33 +37,48 @@ export class LanguageResult {
  * @param {string} language
  * @returns {boolean}
  */
-function isReliable (results, numNgrams, language) {
+function isReliable(results, language, numNgrams, thresholdRatio) {
   if (!results.length || numNgrams < 3) {
     return false
   }
   const nextScore = results.length > 1 ? results[1][0] : 0
-  // A minimum of a 24% per ngram score from average
-  return !(avgScore[language] * 0.24 > results[0][1] / numNgrams || 0.01 >
+  return !(avgScore[language] * thresholdRatio > results[0][1] || 0.01 >
     Math.abs(results[0][1] - nextScore))
 
 }
 
 /**
  * Converts internal multi-array results, with integer language codes, to final object with ISO 639-1 codes
- * @param {Object} results
+ * @param {Array} orderedResults
  * @param {Object} langCodes
  * @returns {Object}
  */
-function getScores (results, langCodes) {
+function getScores(orderedResults, langCodes) {
   let scores = {}
-  let key
-  for (key in results) {
-    let score = results[key][1]
-    if (score === 0) {
-      break
-    }
-    scores[langCodes[results[key][0]]] = score
+  // Javascript does Not guarantee object order, but lets try to create final object in order  
+  for (let key in orderedResults) {
+	 scores[langCodes[orderedResults[key][0]]] = orderedResults[key][1]; 
   }
   return scores
 }
 
+/**
+ * @param {Array} results
+ * @param {number} langCodes
+ * @returns {Array}
+ */
+function orderAndScale(results, numNgrams) {
+  // const entries = results.map((v, i) => [i, v]);  
+  let scale = 25 // Handpicked to scale raw scores values
+  let newResults = []
+  for (let lang in results) {
+    if (results[lang] > 0) {
+      let ngramScore = (results[lang]/numNgrams)
+	   // simple 0-1 score
+      newResults.push([parseInt(lang), ngramScore / (ngramScore + scale)])
+    }
+  }
+  newResults.sort((a, b) => b[1] - a[1]);
+  
+  return newResults;
+}

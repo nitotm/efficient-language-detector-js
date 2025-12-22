@@ -69,7 +69,7 @@ const testCases = [
   },
 
   {
-    name: 'Accuracy test: medium.js + big-test.txt', assert: '>', compare: 99.4, func: function () {
+    name: 'Accuracy test: medium.js + big-test.txt', assert: '>', compare: 99.6, func: function () {
       let correct = 0
       let fails = 0
       const lines = bigTest.split("\n")
