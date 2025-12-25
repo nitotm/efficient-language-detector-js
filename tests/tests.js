@@ -51,18 +51,18 @@ const testCases = [
     },
 
     {
-        name: 'Create langsSubset, detect', assert: '===', compare: '["en"]', func: function () {
-            eld.langsSubset(['en'])
+        name: 'Create setLanguageSubset, detect', assert: '===', compare: '["en"]', func: function () {
+            eld.setLanguageSubset(['en'])
             let scores = JSON.stringify(Object.keys(eld.detect('How are you? Bien, gracias').getScores()))
-            eld.langsSubset(false)
+            eld.setLanguageSubset(false)
             return scores
         },
     },
 
     {
-        name: 'Disable langsSubset, detect', assert: '>', compare: 1, func: function () {
-            eld.langsSubset(['en'])
-            eld.langsSubset(false)
+        name: 'Disable setLanguageSubset, detect', assert: '>', compare: 1, func: function () {
+            eld.setLanguageSubset(['en'])
+            eld.setLanguageSubset(false)
             let scores = eld.detect('How are you? Bien, gracias').getScores()
             return Object.keys(scores).length
         },

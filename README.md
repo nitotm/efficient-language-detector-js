@@ -21,7 +21,7 @@ ELD is also available in [Python](https://github.com/nitotm/efficient-language-d
 5. [Languages](#languages)
 
 > Changes from v1 to v2
-> - `dynamicLangSubset()` is now called `langsSubset()`  
+> - `dynamicLangSubset()` is now called `setLanguageSubset()`  
 > - `cleanText()` is now called `enableTextCleanup()`  
 > - `loadNgrams()` is now called `load()`  
 > 
@@ -89,10 +89,10 @@ console.log( eld.detect('Hola, cómo te llamas?').language )
 let languagesSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
 
 // Option 1 
-// Setting langsSubset(), detect() executes normally but finally filters the excluded languages
-eld.langsSubset(languagesSubset) // Returns an Object with the validated languages of the subset
+// Setting setLanguageSubset(), detect() executes normally but finally filters the excluded languages
+eld.setLanguageSubset(languagesSubset) // Returns an Object with the subset validated languages
 // to remove the subset
-eld.langsSubset(false)
+eld.setLanguageSubset(false)
 
 // Option 2 ( NOT availible for static eld, with preloaded DB size )
 // The optimal way to regularly use the same subset, is using saveSubset() to download a new database

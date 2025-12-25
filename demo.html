@@ -43,11 +43,11 @@
     let languagesSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
 
     // Option 1. With dynamicLangSubset, detector executes normally, but at the end will filter the excluded languages
-    console.log(eld.langsSubset(languagesSubset)) // Returns the validated languages of the subset
+    console.log(eld.setLanguageSubset(languagesSubset)) // Returns the validated languages of the subset
     // { 9: "de", 11: "en", 12: "es", 17: "fr", 25: "it", 37: "nl" }
 
     // to remove the subset
-    eld.langsSubset(false)
+    eld.setLanguageSubset(false)
 
     /*
     Option 2. The optimal way to regularly use the same subset, will be using saveSubset()

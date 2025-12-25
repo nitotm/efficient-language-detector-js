@@ -26,7 +26,7 @@ export async function load(name = 'medium') {
     })
 }
 
-const withLoader = {...eld, load};
+const withLoader = {...eld, load, loadNgrams: load};
 
 export { withLoader as eld };
 export default withLoader;

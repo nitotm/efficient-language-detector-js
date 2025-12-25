@@ -46,11 +46,17 @@ interface Eld {
      */
     enableTextCleanup(flag: boolean): void;
 
+    /** @deprecated Use `enableTextCleanup` instead. */
+    cleanText(flag: boolean): void;
+
     /**
      * Create a dynamic subset of languages. Accepts an array of language keys or `false` to reset.
      * Returns a validated list of language keys included in the new subset.
      */
-    langsSubset(languages: string[] | boolean): Record<number, string>;
+    setLanguageSubset(languages: string[] | boolean): Record<number, string>;
+
+    /** @deprecated Use `setLanguageSubset` instead. */
+    dynamicLangSubset(languages: string[] | boolean): Record<number, string>;
 
     /** Save subset in a file */
     saveSubset(languages: string[]): void;
@@ -66,6 +72,9 @@ interface Eld {
 interface EldWithLoader extends Eld {
     /** Load a named ngrams dataset by key (e.g. 'large') */
     load(size?: string): Promise<void | true>;
+
+    /** @deprecated Use `load` instead. */
+    loadNgrams(size?: string): Promise<void | true>;
 }
 
 /** The primary exported API object. Static entries export `eld: Eld`. The dynamic root exports `eld: EldWithLoader`. */

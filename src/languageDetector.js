@@ -19,7 +19,11 @@ const eld = (function () {
     return {
         detect,
         enableTextCleanup,
-        langsSubset,
+        /** @deprecated Use `enableTextCleanup` instead. */
+        cleanText: enableTextCleanup,
+        setLanguageSubset,
+        /** @deprecated Use `setLanguageSubset` instead. */
+        dynamicLangSubset: setLanguageSubset,
         saveSubset,
         info
     }
@@ -267,12 +271,12 @@ function makeSubset(languages) {
 
 /**
  * Creates a subset of languages, from which detect() will filter excluded languages from the results
- * Call langsSubset(false) to delete the subset
+ * Call setLanguageSubset(false) to delete the subset
  *
  * @param {Array|boolean} languages
  * @returns {Object} Returns list of the validated languages for the new subset
  */
-function langsSubset(languages) {
+function setLanguageSubset(languages) {
     let result = makeSubset(languages)
     if (result) {
         return isoLanguages(result, languageData.langCodes)
