@@ -8,42 +8,43 @@ Package npmjs.com/package/eld
 import { avgScore } from './avgScore.js'
 
 export class LanguageResult {
-  /**
-   * Creates an instance of LanguageResult.
-   *
-   * @param {string} language
-   * @param {Object} results
-   * @param {number} numNgrams
-   * @param {Object} langCodes
-   * @memberof LanguageResult
-   */
-  constructor(language, results, numNgrams, langCodes) {
-    this.language = language
-	 let orderedResults = null;
-	 this.getScores = () => {
-		orderedResults = orderedResults || orderAndScale(results, numNgrams);
-      return getScores(orderedResults, langCodes, numNgrams) // returns object
-    };
-	 this.isReliable = (thresholdRatio = 0.75) => {
-		orderedResults = orderedResults || orderAndScale(results, numNgrams);
-      return isReliable(orderedResults, language, numNgrams, thresholdRatio) // returns boolean
-    };
-  }
+    /**
+     * Creates an instance of LanguageResult.
+     *
+     * @param {string} language
+     * @param {array} results
+     * @param {number} numNgrams
+     * @param {Object} langCodes
+     * @memberof LanguageResult
+     */
+    constructor(language, results, numNgrams, langCodes) {
+        this.language = language
+        let orderedResults = null;
+        this.getScores = () => {
+            orderedResults = orderedResults || orderAndScale(results, numNgrams);
+            return getScores(orderedResults, langCodes) // returns object
+        };
+        this.isReliable = (thresholdRatio = 0.75) => {
+            orderedResults = orderedResults || orderAndScale(results, numNgrams);
+            return isReliable(orderedResults, language, numNgrams, thresholdRatio) // returns boolean
+        };
+    }
 }
 
 /**
  * @param {object} results
- * @param {number} numNgrams
  * @param {string} language
+ * @param {number} numNgrams
+ * @param {number} thresholdRatio
  * @returns {boolean}
  */
 function isReliable(results, language, numNgrams, thresholdRatio) {
-  if (!results.length || numNgrams < 3) {
-    return false
-  }
-  const nextScore = results.length > 1 ? results[1][0] : 0
-  return !(avgScore[language] * thresholdRatio > results[0][1] || 0.01 >
-    Math.abs(results[0][1] - nextScore))
+    if (!results.length || numNgrams < 3) {
+        return false
+    }
+    const nextScore = results.length > 1 ? results[1][0] : 0
+    return !(avgScore[language] * thresholdRatio > results[0][1] || 0.01 >
+        Math.abs(results[0][1] - nextScore))
 
 }
 
@@ -54,31 +55,31 @@ function isReliable(results, language, numNgrams, thresholdRatio) {
  * @returns {Object}
  */
 function getScores(orderedResults, langCodes) {
-  let scores = {}
-  // Javascript does Not guarantee object order, but lets try to create final object in order  
-  for (let key in orderedResults) {
-	 scores[langCodes[orderedResults[key][0]]] = orderedResults[key][1]; 
-  }
-  return scores
+    let scores = {}
+    // JavaScript does Not guarantee object order, but let's try to create final object in order
+    for (let key in orderedResults) {
+        scores[langCodes[orderedResults[key][0]]] = orderedResults[key][1];
+    }
+    return scores
 }
 
 /**
  * @param {Array} results
- * @param {number} langCodes
+ * @param {number} numNgrams
  * @returns {Array}
  */
 function orderAndScale(results, numNgrams) {
-  // const entries = results.map((v, i) => [i, v]);  
-  let scale = 25 // Handpicked to scale raw scores values
-  let newResults = []
-  for (let lang in results) {
-    if (results[lang] > 0) {
-      let ngramScore = (results[lang]/numNgrams)
-	   // simple 0-1 score
-      newResults.push([parseInt(lang), ngramScore / (ngramScore + scale)])
+    // const entries = results.map((v, i) => [i, v]);
+    let scale = 25 // Handpicked to scale raw scores values
+    let newResults = []
+    for (let lang in results) {
+        if (results[lang] > 0) {
+            let ngramScore = (results[lang] / numNgrams)
+            // simple 0-1 score
+            newResults.push([parseInt(lang), ngramScore / (ngramScore + scale)])
+        }
     }
-  }
-  newResults.sort((a, b) => b[1] - a[1]);
-  
-  return newResults;
+    newResults.sort((a, b) => b[1] - a[1]);
+
+    return newResults;
 }

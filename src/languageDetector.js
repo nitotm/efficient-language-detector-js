@@ -5,7 +5,7 @@ Author Nito T.M. (https://github.com/nitotm)
 Package npmjs.com/package/eld
 */
 
-import { languageData, loadNgrams } from './languageData.js'
+import { languageData } from './languageData.js'
 import { separators, matchDomains } from './regexPatterns.js'
 import { dictionary } from './dictionary.js'
 import { isoLanguages } from './isoLanguages.js'
@@ -15,20 +15,14 @@ import { saveLanguageSubset } from './saveLanguageSubset.dev.js'
 
 // Project is ES2015
 const eld = (function () {
-	// Add initialization function
-	async function init(size = 'medium') {
-			await loadNgrams(size);
-	}
 
-  return {
-    init,
-    detect,
-    cleanText,
-    dynamicLangSubset,
-    saveSubset,
-    loadNgrams,
-    info,
-  }
+    return {
+        detect,
+        enableTextCleanup,
+        langsSubset,
+        saveSubset,
+        info
+    }
 })()
 
 /** @type {boolean|Array} */
@@ -36,6 +30,9 @@ let subset = false
 
 /** @type {boolean} When true, detect() cleans input text with getCleanTxt() */
 let doCleanText = false
+
+/** @type {string} */
+let loadError = 'No database loaded, use load()'
 
 /**
  * detect() identifies the natural language of a UTF-8 string
@@ -45,31 +42,32 @@ let doCleanText = false
  * @param {string} text UTF-8
  * @returns {{language: string, getScores(): Object, isReliable(): boolean}} class LanguageResult
  */
-function detect (text) {
-  if (typeof text !== 'string') return new LanguageResult('', [], 0, {})
+function detect(text) {
+    if (typeof text !== 'string') return new LanguageResult('', [], 0, {})
+    if (!languageData.type) throw new Error(loadError)
 
-  if (doCleanText) {
-    // Removes Urls, emails, alphanumerical & numbers
-    text = getCleanTxt(text)
-  }
+    if (doCleanText) {
+        // Removes Urls, emails, alphanumerical & numbers
+        text = getCleanTxt(text)
+    }
 
-  const byteWords = textProcessor(text)
-  const byteNgrams = getByteNgrams(byteWords)
-  const numNgrams = Object.keys(byteNgrams).length
-  let results = calculateScores(byteNgrams, numNgrams)
-  let language = ''
+    const byteWords = textProcessor(text)
+    const byteNgrams = getByteNgrams(byteWords)
+    const numNgrams = Object.keys(byteNgrams).length
+    let results = calculateScores(byteNgrams)
+    let language = ''
 
-  if (subset) {
-    results = filterLangSubset(results)
-  }
-  
-  let langID = getMaxLang(results)
-  if (langID !== false) { 
-	 language = languageData.langCodes[langID]
-	 return new LanguageResult(language, results, numNgrams, languageData.langCodes)
-  } 
-	 
-  return new LanguageResult('', [], 0, {})
+    if (subset) {
+        results = filterLangSubset(results)
+    }
+
+    let langID = getMaxLang(results)
+    if (langID !== false) {
+        language = languageData.langCodes[langID]
+        return new LanguageResult(language, results, numNgrams, languageData.langCodes)
+    }
+
+    return new LanguageResult('', [], 0, {})
 }
 
 /**
@@ -77,8 +75,8 @@ function detect (text) {
  *
  * @param {boolean} bool
  */
-function cleanText(bool) {
-  doCleanText = Boolean(bool)
+function enableTextCleanup(bool) {
+    doCleanText = Boolean(bool)
 }
 
 /**
@@ -88,15 +86,15 @@ function cleanText(bool) {
  * @returns {string}
  */
 function getCleanTxt(str) {
-  // Remove URLS
-  str = str.replace(/[hw]((ttps?:\/\/(www\.)?)|ww\.)([^\s/?.#-]+\.?)+(\/\S*)?/gi, ' ')
-  // Remove emails
-  str = str.replace(/[a-zA-Z0-9.!$%&’+_`-]+@[A-Za-z0-9.-]+\.[A-Za-z0-9-]{2,64}/g, ' ')
-  // Remove .com domains
-  str = str.replace(matchDomains, ' ')
-  // Remove alphanumerical/number codes
-  str = str.replace(/[a-zA-Z]*[0-9]+[a-zA-Z0-9]*/g, ' ')
-  return str
+    // Remove URLS
+    str = str.replace(/[hw]((ttps?:\/\/(www\.)?)|ww\.)([^\s/?.#-]+\.?)+(\/\S*)?/gi, ' ')
+    // Remove emails
+    str = str.replace(/[a-zA-Z0-9.!$%&’+_`-]+@[A-Za-z0-9.-]+\.[A-Za-z0-9-]{2,64}/g, ' ')
+    // Remove .com domains
+    str = str.replace(matchDomains, ' ')
+    // Remove alphanumerical/number codes
+    str = str.replace(/[a-zA-Z]*[0-9]+[a-zA-Z0-9]*/g, ' ')
+    return str
 }
 
 /**
@@ -104,11 +102,11 @@ function getCleanTxt(str) {
  * @returns {Array}
  */
 function textProcessor(text) {
-  text = text.substring(0, 1000)
-  // Normalize special characters/word separators
-  text = text.replace(separators, ' ')
-  text = text.trim().toLowerCase()
-  return strToUtf8Bytes(text) // returns array of words
+    text = text.substring(0, 1000)
+    // Normalize special characters/word separators
+    text = text.replace(separators, ' ')
+    text = text.trim().toLowerCase()
+    return strToUtf8Bytes(text) // returns array of words
 }
 
 /**
@@ -118,53 +116,52 @@ function textProcessor(text) {
  * @returns {Object}
  */
 function getByteNgrams(words) {
-  let byteNgrams = {}
-  let countNgrams = 0
-  let thisBytes
-  let j
+    let byteNgrams = {}
+    let countNgrams = 0
+    let thisBytes
+    let j
 
-  for (let key in words) {
-    let word = words[key]
-    let len = word.length
-    if (len > 70) {
-      len = 70
+    for (let key in words) {
+        let word = words[key]
+        let len = word.length
+        if (len > 70) {
+            len = 70
+        }
+        // 4 bytes ngram length, 3 bytes stride
+        for (j = 0; j + 4 < len; j += 3, ++countNgrams) {
+            thisBytes = (j === 0 ? ' ' : '') + word.substring(j, j + 4)
+            byteNgrams[thisBytes] = true
+        }
+        thisBytes = (j === 0 ? ' ' : '') + word.substring(len !== 3 ? len - 4 : 0) + ' '
+        byteNgrams[thisBytes] = true
+        countNgrams++
     }
-	 // 4 bytes ngram length, 3 bytes stride
-    for (j = 0; j + 4 < len; j += 3, ++countNgrams) {
-      thisBytes = (j === 0 ? ' ' : '') + word.substring(j, j + 4)
-      byteNgrams[thisBytes] = true
-    }
-    thisBytes = (j === 0 ? ' ' : '') + word.substring(len !== 3 ? len - 4 : 0) + ' '
-    byteNgrams[thisBytes] = true
-    countNgrams++
-  }
-  return byteNgrams
+    return byteNgrams
 }
 
 /**
  * Calculate scores for each language from the given Ngrams
  *
  * @param {Object} byteNgrams
- * @param {number} numNgrams
  * @returns {Array}
  */
-function calculateScores(byteNgrams, numNgrams) {
-  let bytes, lang, thisByte
-  let langScore = [...languageData.langScore]
-  let baseNgramScore = 53; // In order to reduce DB size we subtract minimum score
-  for (bytes in byteNgrams) {
-    //frequency = byteNgrams[bytes]
-    thisByte = languageData.ngrams[bytes]
-      // Most time-consuming loop, do only the strictly necessary inside
-      for (lang in thisByte) {
-         langScore[lang] += thisByte[lang] + baseNgramScore;
-      }
+function calculateScores(byteNgrams) {
+    let bytes, lang, thisByte
+    let langScore = [...languageData.langScore]
+    let baseNgramScore = 53; // In order to reduce DB size we subtract minimum score
+    for (bytes in byteNgrams) {
+        //frequency = byteNgrams[bytes]
+        thisByte = languageData.ngrams[bytes]
+        // Most time-consuming loop, do only the strictly necessary inside
+        for (lang in thisByte) {
+            langScore[lang] += thisByte[lang] + baseNgramScore;
+        }
     }
-  return langScore
+    return langScore
 }
 
 /**
- * Converts each byte to a single character, using our own dictionary, since javascript does not allow raw byte
+ * Converts each byte to a single character, using our own dictionary, since JavaScript does not allow raw byte
  * strings or invalid UTF-8 characters. We could use TextEncoder() to create an Uint8Array, and then translate to our
  * dictionary, but this function is overall faster as it does both jobs at once
  *
@@ -174,52 +171,52 @@ function calculateScores(byteNgrams, numNgrams) {
  * @returns {Array}
  */
 function strToUtf8Bytes(str) {
-  let encoded = ''
-  let words = []
-  let countBytes = 0
-  const cutAfter = 350 // Cut to first whitespace after 350 byte length offset
-  const enforceCutAfter = 380 // Cut after any UTF-8 character when surpassing 380 byte length
+    let encoded = ''
+    let words = []
+    let countBytes = 0
+    const cutAfter = 350 // Cut to first whitespace after 350 byte length offset
+    const enforceCutAfter = 380 // Cut after any UTF-8 character when surpassing 380 byte length
 
-  for (let ii = 0; ii < str.length; ii++) {
-    let charCode = str.charCodeAt(ii)
+    for (let ii = 0; ii < str.length; ii++) {
+        let charCode = str.charCodeAt(ii)
 
-    if (charCode < 0x80) {
-      if (charCode === 32) {
-        if (encoded !== '') {
-          words.push(encoded)
-          encoded = ''
+        if (charCode < 0x80) {
+            if (charCode === 32) {
+                if (encoded !== '') {
+                    words.push(encoded)
+                    encoded = ''
+                }
+                if (countBytes > cutAfter) {
+                    break
+                }
+            } else {
+                encoded += str[ii]
+            }
+            countBytes++
+        } else if (charCode < 0x800) {
+            encoded += dictionary[0xc0 | (charCode >> 6)] + dictionary[0x80 | (charCode & 0x3f)]
+            countBytes += 2
+        } else if (charCode < 0xd800 || charCode >= 0xe000) {
+            encoded += dictionary[0xe0 | (charCode >> 12)] + dictionary[0x80 | ((charCode >> 6) & 0x3f)] +
+                dictionary[0x80 | (charCode & 0x3f)]
+            countBytes += 3
+        } else {
+            // UTF-16
+            ii++
+            charCode = 0x10000 + (((charCode & 0x3ff) << 10) | (str.charCodeAt(ii) & 0x3ff))
+            encoded += dictionary[0xf0 | (charCode >> 18)] + dictionary[0x80 | ((charCode >> 12) & 0x3f)] +
+                dictionary[0x80 | ((charCode >> 6) & 0x3f)] + dictionary[0x80 | (charCode & 0x3f)]
+            countBytes += 4
         }
-        if (countBytes > cutAfter) {
-          break
+        if (countBytes > enforceCutAfter) {
+            break
         }
-      } else {
-        encoded += str[ii]
-      }
-      countBytes++
-    } else if (charCode < 0x800) {
-      encoded += dictionary[0xc0 | (charCode >> 6)] + dictionary[0x80 | (charCode & 0x3f)]
-      countBytes += 2
-    } else if (charCode < 0xd800 || charCode >= 0xe000) {
-      encoded += dictionary[0xe0 | (charCode >> 12)] + dictionary[0x80 | ((charCode >> 6) & 0x3f)] +
-        dictionary[0x80 | (charCode & 0x3f)]
-      countBytes += 3
-    } else {
-      // UTF-16
-      ii++
-      charCode = 0x10000 + (((charCode & 0x3ff) << 10) | (str.charCodeAt(ii) & 0x3ff))
-      encoded += dictionary[0xf0 | (charCode >> 18)] + dictionary[0x80 | ((charCode >> 12) & 0x3f)] +
-        dictionary[0x80 | ((charCode >> 6) & 0x3f)] + dictionary[0x80 | (charCode & 0x3f)]
-      countBytes += 4
     }
-    if (countBytes > enforceCutAfter) {
-      break
+    if (encoded !== '') {
+        words.push(encoded)
+        // It is faster to build the array than to words.split(/ +/).filter((x) => x !== ' ') later
     }
-  }
-  if (encoded !== '') {
-    words.push(encoded)
-    // It is faster to build the array than to words.split(/ +/).filter((x) => x !== ' ') later
-  }
-  return words
+    return words
 }
 
 /**
@@ -229,14 +226,14 @@ function strToUtf8Bytes(str) {
  * @returns {Array}
  */
 function filterLangSubset(results) {
-  let subResults = [];
-  // const keepSet = new Set(subset);
-  for (let i = 0; i < results.length; i++) {
-    if (results[i] > 0 && subset.indexOf(i) > -1 ) { // keepSet.has(i)
-	   subResults[i] = results[i];
-	 }
-  }
-  return subResults;
+    let subResults = [];
+    // const keepSet = new Set(subset);
+    for (let i = 0; i < results.length; i++) {
+        if (results[i] > 0 && subset.indexOf(i) > -1) { // keepSet.has(i)
+            subResults[i] = results[i];
+        }
+    }
+    return subResults;
 }
 
 /**
@@ -247,39 +244,40 @@ function filterLangSubset(results) {
  * @returns {Array|boolean}
  */
 function makeSubset(languages) {
-  if (languages) {
-    subset = []
-    for (let key in languages) {
-      // Validate languages, by checking if they are available at languageData
-      let lang = Object.keys(languageData.langCodes).find((lkey) => languageData.langCodes[lkey] === languages[key])
-      if (lang) {
-        subset.push(parseInt(lang))
-      }
-    }
-    if (subset.length) {
-      subset.sort()
+    if (!languageData.type) throw new Error(loadError)
+    if (languages) {
+        subset = []
+        for (let key in languages) {
+            // Validate languages, by checking if they are available at languageData
+            let lang = Object.keys(languageData.langCodes).find((lkey) => languageData.langCodes[lkey] === languages[key])
+            if (lang) {
+                subset.push(parseInt(lang))
+            }
+        }
+        if (subset.length) {
+            subset.sort()
+        } else {
+            subset = false
+        }
     } else {
-      subset = false
+        subset = false
     }
-  } else {
-    subset = false
-  }
-  return subset
+    return subset
 }
 
 /**
  * Creates a subset of languages, from which detect() will filter excluded languages from the results
- * Call dynamicLangSubset(false) to delete the subset
+ * Call langsSubset(false) to delete the subset
  *
  * @param {Array|boolean} languages
  * @returns {Object} Returns list of the validated languages for the new subset
  */
-function dynamicLangSubset(languages) {
-  let result = makeSubset(languages)
-  if (result) {
-      return isoLanguages(result, languageData.langCodes)
+function langsSubset(languages) {
+    let result = makeSubset(languages)
+    if (result) {
+        return isoLanguages(result, languageData.langCodes)
     }
-  return {}
+    return {}
 }
 
 /**
@@ -287,33 +285,33 @@ function dynamicLangSubset(languages) {
  * languages from the array argument
  *
  * @param {Array} languages
-*/
+ */
 function saveSubset(languages) {
-  const langArray = makeSubset(languages)
-  makeSubset(false) // remove the global subset, we only need the filtered langArray
-  saveLanguageSubset.saveSubset(langArray, languageData.ngrams, languageData.langCodes, languageData.type)
+    const langArray = makeSubset(languages)
+    makeSubset(false) // remove the global subset, we only need the filtered langArray
+    saveLanguageSubset.saveSubset(langArray, languageData.ngrams, languageData.langCodes, languageData.type)
 }
 
 function getMaxLang(obj) {
-	let maxKey = false;
-	let maxVal = 0;
+    let maxKey = false;
+    let maxVal = 0;
 
-	for (const key in obj) {
-	  const val = obj[key];
-	  if (val > 0 && val > maxVal) {
-		 maxVal = val;
-		 maxKey = key;
-	  }
-	}
-	return maxKey;
+    for (const key in obj) {
+        const val = obj[key];
+        if (val > 0 && val > maxVal) {
+            maxVal = val;
+            maxKey = key;
+        }
+    }
+    return maxKey;
 }
 
 function info() {
-  return {
-    'Data type': languageData.type,
-    'Languages': languageData.langCodes,
-    'Dynamic subset': subset ? isoLanguages(subset, languageData.langCodes) : false
-  }
+    return {
+        'Data type': languageData.type,
+        'Languages': languageData.langCodes,
+        'Subset': subset ? isoLanguages(subset, languageData.langCodes) : false
+    }
 }
 
 export { eld };

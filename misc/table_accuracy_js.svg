@@ -3,41 +3,41 @@
   <text fill='#555' transform='translate(30 16)'>
     <tspan x='0' y='0'>Accuracy</tspan>
   </text>
-  <text transform='translate(4 52)'>Nito-ELD</text>
+  <text transform='translate(4 52)'>Nito-ELD-M</text>
   		<path d='M126 30h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 52)'>99.3%</text>
+	<text transform='translate(132 52)'>99.4%</text>
 		<path d='M219 30h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 52)'>99.4%</text>
+	<text transform='translate(225 52)'>99.6%</text>
 		<path d='M312 30h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 52)'>98.8%</text>
+	<text transform='translate(318 52)'>99.1%</text>
 		<path d='M405 30h93v30H405z' fill='#fee'/>
-	<text transform='translate(411 52)'>87.6%</text>
+	<text transform='translate(411 52)'>88.4%</text>
 		<path d='M498 30h102v30H498z' fill='#fee'/>
-	<text transform='translate(504 52)'>73.3%</text>
+	<text transform='translate(504 52)'>73.8%</text>
 	
 	 <text transform='translate(4 82)'>Nito-ELD-L</text>
   		<path d='M126 60h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 82)'>99.4%</text>
+	<text transform='translate(132 82)'>99.7%</text>
 		<path d='M219 60h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 82)'>99.4%</text>
+	<text transform='translate(225 82)'>99.7%</text>
 		<path d='M312 60h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 82)'>98.7%</text>
+	<text transform='translate(318 82)'>99.2%</text>
 		<path d='M405 60h93v30H405z' fill='#fee'/>
-	<text transform='translate(411 82)'>89.6%</text>
+	<text transform='translate(411 82)'>90.4%</text>
 		<path d='M498 60h102v30H498z' fill='#fee'/>
-	<text transform='translate(504 82)'>76.4%</text> 
+	<text transform='translate(504 82)'>76.9%</text> 
 	
 	<text transform='translate(4 112)'>Nito-ELD-XS</text>
   		<path d='M126 90h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 112)'>99.2%</text>
+	<text transform='translate(132 112)'>99.3%</text>
 		<path d='M219 90h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 112)'>99.4%</text>
+	<text transform='translate(225 112)'>99.5%</text>
 		<path d='M312 90h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 112)'>98.4%</text>
+	<text transform='translate(318 112)'>98.7%</text>
 		<path d='M405 90h93v30H405z' fill='#fee'/>
-	<text transform='translate(411 112)'>84.4%</text>
+	<text transform='translate(411 112)'>84.9%</text>
 		<path d='M498 90h102v30H498z' fill='#eee'/>
-	<text transform='translate(504 112)'>66.8%</text> 
+	<text transform='translate(504 112)'>67.1%</text> 
 	
   <text transform='translate(4 142)'>Lingua</text><text fill='#08e' font-size='12' transform='translate(54 132)'>1</text>
     	<path d='M126 120h93v30H126z' fill='#dfd'/>

@@ -6,35 +6,19 @@ Package npmjs.com/package/eld
 */
 
 import { avgScore } from './avgScore.js'
-// import { ngramsData } from "./ngrams/medium.js"
 
 export const languageData = {
-  langCodes: {}, langScore: [], ngrams: {}, type: '', avgScore: avgScore
+    langCodes: {}, langScore: [], ngrams: {}, type: '', avgScore: avgScore
 }
-
-/**
- * @param {string} file File inside /ngrams/, with ELD ngrams data format
- * @returns {boolean|undefined} true if file was loaded
- */
-export async function loadNgrams(size) {
-  let filename = size.replace(/\.js$/, '')
-  return import('./ngrams/' + filename + '.js').then((module) => {
-    setNgrams(module.ngramsData)
-    if (languageData.type) {
-      return true
-    }
-  })
-}
-// setNgrams(ngramsData) // Used to create minified files with import { ngramsData }
 
 /**
  * @param {Object} data
  */
-function setNgrams(data) {
-  languageData.langCodes = data.languages
-  languageData.langScore = Array(Object.keys(data.languages).length).fill(0)
-  languageData.ngrams = data.ngrams
-  languageData.type = data.type
+export function setNgrams(data) {
+    languageData.langCodes = data.languages
+    languageData.langScore = Array(Object.keys(data.languages).length).fill(0)
+    languageData.ngrams = data.ngrams
+    languageData.type = data.type
 }
 
 /* ISO 639-1 codes, for the 60 languages set.

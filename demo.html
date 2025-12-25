@@ -1,70 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Demo</title>
-  </head>
-  <body>
-    <main>
-      <h1>Demo</h1>
-      <div id="demo">See results at the console.</div>
-    </main>
-    <!-- <script src="minified/eld.M60.min.js" charset="utf-8"></script> -->
-    <script type="module">
-	  import { eld } from './src/languageDetector.js'
+</head>
+<body>
+<main>
+    <h1>Demo</h1>
+    <div id="demo">See results at the console.</div>
+</main>
+<!-- <script src="minified/eld.xs.min.js" charset="utf-8"></script> -->
+<script type="module">
+    import { eld } from './src/entries/dynamic.js' // import { eld } from "eld";
+    // import { eld } from './src/entries/static.large.js' // import { eld } from "eld/large";
 
-	  // Initialize database, select file: 'extrasmall', 'small', 'medium', 'large' or subsets
-	  await eld.init('large')
+    // Initialize database, select file: 'extrasmall', 'small', 'medium', 'large' or subsets
+    await eld.load('large') // Not necessary/available at static sizes { eld/large } imports and bundles
 
-	  // detect() expects a UTF-8 string, returns an object, with a 'language' variable : ISO 639-1 code or empty string
-	  console.log( 'Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?') )
-	  // { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
-	  // { language: string, getScores(): Object, isReliable(): boolean }
-	  // isReliable(threshold = 0.75) can take a threshold ratio 0-1. A higher threshold will make check more strict.
+    // detect() expects a UTF-8 string, returns an object, with a 'language' variable : ISO 639-1 code or empty string
+    console.log('Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?'))
+    // { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
+    // { language: string, getScores(): Object, isReliable(): boolean }
+    // isReliable(threshold = 0.75) can take a threshold ratio 0-1. A higher threshold will make check more strict.
 
-	  console.log( 'Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?').language )
-	  // 'es'
+    console.log('Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?').language)
+    // 'es'
 
-     console.log( 'getScores', eld.detect('Hola, cómo te llamas?').getScores() )
-     console.log( 'isReliable', eld.detect('Hola, cómo te llamas?').isReliable() )
-		
-	  /*
-	  * To reduce the languages to be detected, there are 2 options, they only need to be executed once.
-	  *  This is the complete list on languages for ELD v1, using ISO 639-1 codes:
-	  *  ['am', 'ar', 'az', 'be', 'bg', 'bn', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'et', 'eu', 'fa', 'fi', 'fr',
-	  *   'gu', 'he', 'hi', 'hr', 'hu', 'hy', 'is', 'it', 'ja', 'ka', 'kn', 'ko', 'ku', 'lo', 'lt', 'lv', 'ml', 'mr',
-	  *   'ms', 'nl', 'no', 'or', 'pa', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'sq', 'sr', 'sv', 'ta', 'te', 'th', 'tl',
-	  *   'tr', 'uk', 'ur', 'vi', 'yo', 'zh']
-	  */
+    console.log('getScores', eld.detect('Hola, cómo te llamas?').getScores())
+    console.log('isReliable', eld.detect('Hola, cómo te llamas?').isReliable())
 
-	  let langSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
+    /*
+    * To reduce the languages to be detected, there are 2 options, they only need to be executed once.
+    *  This is the complete list on languages for ELD v1, using ISO 639-1 codes:
+    *  ['am', 'ar', 'az', 'be', 'bg', 'bn', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'et', 'eu', 'fa', 'fi', 'fr',
+    *   'gu', 'he', 'hi', 'hr', 'hu', 'hy', 'is', 'it', 'ja', 'ka', 'kn', 'ko', 'ku', 'lo', 'lt', 'lv', 'ml', 'mr',
+    *   'ms', 'nl', 'no', 'or', 'pa', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'sq', 'sr', 'sv', 'ta', 'te', 'th', 'tl',
+    *   'tr', 'uk', 'ur', 'vi', 'yo', 'zh']
+    */
 
-	  // Option 1. With dynamicLangSubset, detector executes normally, but at the end will filter the excluded languages
-	  console.log( eld.dynamicLangSubset(langSubset) ) // Returns the validated languages of the subset
-      // { 9: "de", 11: "en", 12: "es", 17: "fr", 25: "it", 37: "nl" }
+    let languagesSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
 
-	  // to remove the subset
-	  eld.dynamicLangSubset(false)
+    // Option 1. With dynamicLangSubset, detector executes normally, but at the end will filter the excluded languages
+    console.log(eld.langsSubset(languagesSubset)) // Returns the validated languages of the subset
+    // { 9: "de", 11: "en", 12: "es", 17: "fr", 25: "it", 37: "nl" }
 
-	  /*
-	  Option 2. The optimal way to regularly use the same subset, will be using saveSubset()
-	  saveSubset() will download a new database of Ngrams with only the subset languages. (Only at a web browser)
-		It is not included in the minified version.
-		saveSubset() is also NOT included for Node.js, you would need to use a browser to download the Ngrams file
-	  */
-	  // eld.saveSubset(langSubset)
+    // to remove the subset
+    eld.langsSubset(false)
 
-      // We can dynamically load any Ngrams database saved at src/ngrams/, including subsets. Returns true if success
-      await eld.loadNgrams('medium') // Will not remove any active dynamic subset
-      // eld.loadNgrams('medium').then((loaded) => { if (loaded) { /* code */ } })
+    /*
+    Option 2. The optimal way to regularly use the same subset, will be using saveSubset()
+    eld.saveSubset() will download a new database of Ngrams with only the subset languages. (Only at a web browser)
+      It is not included in the minified version.
+      saveSubset() is also NOT included for Node.js, you would need to use a browser to download the Ngrams file
+    */
+    // eld.saveSubset(languagesSubset)
 
-      // To change the preloaded database on import, edit the file at scr/languageDetector.js: loadNgrams('ngramsM60.js')
-      // if you believe eld should change this database preload behavior, comment at gitHub /discussions
+    // load() Is not available at static sizes { eld/large } imports and bundles
+    // We can dynamically load any other database saved at src/ngrams/, including subsets. Returns true if success
+    await eld.load('medium') // Will not remove any active dynamic subset
+    // eld.load('medium').then((loaded) => { if (loaded) { /* code */ } })
 
-      // Finally, we can get the current status of eld: languages, database type and subset
-      console.log( eld.info() )
-    </script>
-  </body>
+    // Finally, we can get the current status of eld: languages, database type and subset
+    console.log(eld.info())
+
+    /*
+    *  Build and minify example with esbuild + terser
+    *  With package installed:
+    *  npx esbuild --bundle --format=esm eld/large --outfile=eld.large.js
+    *  Using folder path:
+    *  npx esbuild --bundle --format=esm src/entries/static.large.js > eld.large.js
+    *  terser eld.large.js --compress --mangle --output eld.large.min.js
+    *
+    * For iife browser scripts
+    * npx esbuild --bundle --format=iife --global-name=__eld_module src/entries/static.extrasmall.js > eld.xs.js --footer:js="globalThis.eld = __eld_module.default;"
+    */
+</script>
+</body>
 </html>
