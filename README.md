@@ -72,6 +72,7 @@ import { eld } from 'eld/large'
 ### Usage
 If we use standard `'eld'` (dynamic), we need to `load()` a database to initialize.  
 It is Not necessary for static size imports or bundles like `'eld/large'`
+Available sizes: `'large'`, `'medium'`, `'small'` & `'extrasmall'`
 ```javascript
 await eld.load('large') // Not available for static eld with preloaded database
 ```
