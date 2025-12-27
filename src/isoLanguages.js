@@ -12,10 +12,10 @@ Package npmjs.com/package/eld
  * @param {Object} defaultLanguages
  * @returns {Object}
  */
-export function isoLanguages (languageSet, defaultLanguages) {
-  let languageCodes = {}
-  for (let langID of languageSet) {
-    languageCodes[langID] = defaultLanguages[langID]
-  }
-  return languageCodes
+export function isoLanguages(languageSet, defaultLanguages) {
+    let languageCodes = {}
+    for (let langID of languageSet) {
+        languageCodes[langID] = defaultLanguages[langID]
+    }
+    return languageCodes
 }

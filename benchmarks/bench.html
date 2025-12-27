@@ -1,70 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Benchmark</title>
-  </head>
-  <body>
-    <main>
-      <h1>Benchmark</h1>
-      <div id="demo">See results at the console.</div>
-    </main>
-    <script type="module">
-	  import { eld } from '../src/languageDetector.js'
+</head>
+<body>
+<main>
+    <h1>Benchmark</h1>
+    <div id="demo">See results at the console.</div>
+</main>
+<script type="module">
+    import { eld } from '../src/entries/dynamic.js'
 
-	  function parse_txt (text) {
-		 let lines = text.split('\n')
-		 let tests = []
-		 lines.forEach(function (line) {
-			let parts = line.split('\t')
-			tests.push([parts[1], parts[0]])
-		 })
-		 return tests
-	  }
+    await eld.load('large')
+    let rates = []
+    let times = []
+    let scores = {}
 
-	  function do_test (file, tests) {
-		 let correct = 0
-		 let fails = 0
-		 let len = tests.length
-		 const start = Date.now()
+    function parse_txt(text) {
+        let lines = text.split('\n')
+        let tests = []
+        lines.forEach(function (line) {
+            let parts = line.split('\t')
+            tests.push([parts[1], parts[0]])
+        })
+        return tests
+    }
 
-		 tests.forEach(function (testl) {
-			let key = eld.detect(testl[0],
-			  { cleanText: false, checkConfidence: false, minByteLength: 0, minNgrams: 1 }).language
-			if (key === testl[1]) {
-			  correct++
-			} else {
-			  fails++
+    function do_test(file, tests) {
+        let correct = 0
+        let fails = 0
+        let len = tests.length
+        let start
+        let duration = 0
+
+        tests.forEach(function (testl) {
+            start = Date.now();
+            let key = eld.detect(testl[0]).language
+            duration += Date.now() - start;
+            if (key === testl[1]) {
+                correct++
+            } else {
+                fails++
+            }
+            // Get score averages
+            /*
+			let thisScores = eld.detect(testl[0]).getScores()
+			if ( thisScores[testl[1]] ) {
+				if ( !scores[testl[1]] ) {
+					scores[testl[1]] = []
+				}
+				scores[testl[1]].push(thisScores[testl[1]])
 			}
-		 })
-		 const end = Date.now()
-		 console.log(file + ' - Correct rate: ' + (Math.round((correct / len) * 10000) / 100) + '%' + ' - Time: ' +
-			((end - start) / 1000) + ' sec.')
-	  }
+			*/
+        })
+        rates.push(correct / len)
+        times.push(duration)
+        console.log(file + ' - Correct rate: ' + (Math.round((correct / len) * 10000) / 100) + '%' + ' - Time: ' +
+            (duration / 1000) + ' sec.')
+    }
 
-	  let files = ['tweets', 'big-test', 'sentences', 'word-pairs', 'single-words']
-	  for (let file in files) {
-		 let tests = await fetch(files[file] + '.txt').then(response => response.text()).then(text => parse_txt(text))
-		 do_test(files[file], tests)
-	  }
+    let files = ['tweets', 'big-test', 'sentences', 'word-pairs', 'single-words']
+    for (let file in files) {
+        let tests = await fetch(files[file] + '.txt').then(response => response.text()).then(text => parse_txt(text))
+        do_test(files[file], tests)
+    }
+    const accuracy_average = rates.reduce((sum, rate) => sum + rate, 0) / rates.length;
+    const duration_average = times.reduce((sum, times) => sum + times, 0) / times.length;
+    console.log('Accuracy average : ' + (Math.round(accuracy_average * 100000) / 1000) + '%');
+    console.log('Duration average: ' + (duration_average / 1000) + ' sec.');
 
-	  /* ngrams-m
-	  tweets - Correct rate: 99.28% - Time: 0.582 sec.
-	  big-test - Correct rate: 99.42% - Time: 5.075 sec.
-	  sentences - Correct rate: 98.78% - Time: 4.303 sec.
-	  word-pairs - Correct rate: 87.55% - Time: 1.162 sec.
-	  single-words - Correct rate: 73.31% - Time: 0.754 sec.
-	  */
+    // Print score averages
+    /*
+		const averagesRounded = Object.entries(scores).map(([k, arr]) => {
+		  if (!Array.isArray(arr) || arr.length === 0) return [k, null];
+		  const sum = arr.reduce((s, v) => s + (Number.isFinite(Number(v)) ? Number(v) : 0), 0);
+		  const avg = sum / arr.length;
+		  return [k, Number(avg.toFixed(3))];
+		});
+		averagesRounded.sort((a, b) => a[0].localeCompare(b[0]));
+		const averagesRoundedOrdered = Object.fromEntries(averagesRounded);
+		console.log(JSON.stringify(averagesRoundedOrdered, null, 2));
+     */
 
-	  /* ngrams-xs
-	  tweets - Correct rate: 99.15% - Time: 0.502 sec.
-	  big-test - Correct rate: 99.35% - Time: 4.612 sec.
-	  sentences - Correct rate: 98.43% - Time: 4.01 sec.
-	  word-pairs - Correct rate: 84.39% - Time: 1.084 sec.
-	  single-words - Correct rate: 66.75% - Time: 0.729 sec.
-	  */
-    </script>
-  </body>
+    /*
+    v2
+
+      large
+      tweets - Correct rate: 99.67% - Time: 0.402 sec.
+      big-test - Correct rate: 99.69% - Time: 3.596 sec.
+      sentences - Correct rate: 99.17% - Time: 3.049 sec.
+      word-pairs - Correct rate: 90.44% - Time: 0.733 sec.
+      single-words - Correct rate: 76.88% - Time: 0.614 sec.
+      Accuracy average : 93.169%
+      Duration average: 1.67878 sec.
+			heapUsed:  145393920 -> 138 MB aprox at Node.js process.memoryUsage()
+
+      medium
+      tweets - Correct rate: 99.4% - Time: 0.382 sec.
+      big-test - Correct rate: 99.64% - Time: 3.431 sec.
+      sentences - Correct rate: 99.08% - Time: 2.915 sec.
+      word-pairs - Correct rate: 88.37% - Time: 0.719 sec.
+      single-words - Correct rate: 73.84% - Time: 0.571 sec.
+      Accuracy average : 92.067%
+      Duration average: 1.6036 sec.
+			  heapUsed: 74378360 -> 71 MB
+
+      small
+      tweets - Correct rate: 99.39% - Time: 0.389 sec.
+      big-test - Correct rate: 99.63% - Time: 3.274 sec.
+      sentences - Correct rate: 98.94% - Time: 2.813 sec.
+      word-pairs - Correct rate: 87.87% - Time: 0.756 sec.
+      single-words - Correct rate: 71.95% - Time: 0.477 sec.
+      Accuracy average : 91.557%
+      Duration average: 1.5418 sec.
+			  heapUsed: 57134296 -> 54 MB
+
+      extrasmall
+      tweets - Correct rate: 99.29% - Time: 0.384 sec.
+      big-test - Correct rate: 99.5% - Time: 3.251 sec.
+      sentences - Correct rate: 98.65% - Time: 2.705 sec.
+      word-pairs - Correct rate: 84.94% - Time: 0.668 sec.
+      single-words - Correct rate: 67.07% - Time: 0.512 sec.
+      Accuracy average : 89.889%
+      Duration average: 1.504 sec.
+			heapUsed:  38861400 -> 37 MB
+    */
+</script>
+</body>
 </html>

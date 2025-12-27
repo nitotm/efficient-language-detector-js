@@ -3,41 +3,41 @@
   <text fill='#555' transform='translate(30 16)'>
     <tspan x='0' y='0'>Seconds</tspan>
   </text>
-  <text transform='translate(4 52)'>Nito-ELD-js</text>
+  <text transform='translate(4 52)'>Nito-ELD-M</text>
   		<path d='M126 30h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 52)'>0.58"</text>
+	<text transform='translate(132 52)'>0.38"</text>
 		<path d='M219 30h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 52)'>5.1"</text>
+	<text transform='translate(225 52)'>3.4"</text>
 		<path d='M312 30h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 52)'>4.3"</text>
+	<text transform='translate(318 52)'>2.9"</text>
 		<path d='M405 30h93v30H405z' fill='#dfd'/>
-	<text transform='translate(411 52)'>1.2"</text>
+	<text transform='translate(411 52)'>0.73"</text>
 		<path d='M498 30h102v30H498z' fill='#dfd'/>
-	<text transform='translate(504 52)'>0.73"</text>
+	<text transform='translate(504 52)'>0.57"</text>
 	
-	 <text transform='translate(4 82)'>Nito-ELD-L-js</text>
+	 <text transform='translate(4 82)'>Nito-ELD-L</text>
   		<path d='M126 60h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 82)'>0.59"</text>
+	<text transform='translate(132 82)'>0.40"</text>
 		<path d='M219 60h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 82)'>5.2"</text>
+	<text transform='translate(225 82)'>3.6"</text>
 		<path d='M312 60h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 82)'>4.5"</text>
+	<text transform='translate(318 82)'>3.0"</text>
 		<path d='M405 60h93v30H405z' fill='#dfd'/>
-	<text transform='translate(411 82)'>1.2"</text>
+	<text transform='translate(411 82)'>0.73"</text>
 		<path d='M498 60h102v30H498z' fill='#dfd'/>
-	<text transform='translate(504 82)'>0.77"</text>   
+	<text transform='translate(504 82)'>0.61"</text>   
 	
-	<text transform='translate(4 112)'>Nito-ELD-XS-js</text>
+	<text transform='translate(4 112)'>Nito-ELD-XS</text>
     	<path d='M126 90h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 112)'>0.5"</text>
+	<text transform='translate(132 112)'>0.38"</text>
 		<path d='M219 90h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 112)'>4.6"</text>
+	<text transform='translate(225 112)'>3.3"</text>
 		<path d='M312 90h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 112)'>4"</text>
+	<text transform='translate(318 112)'>2.7"</text>
 		<path d='M405 90h93v30H405z' fill='#dfd'/>
-	<text transform='translate(411 112)'>1.1"</text>
+	<text transform='translate(411 112)'>0.67"</text>
 		<path d='M498 90h102v30H498z' fill='#dfd'/>
-	<text transform='translate(504 112)'>0.71"</text>
+	<text transform='translate(504 112)'>0.51"</text>
 	
   <text transform='translate(4 142)'>Lingua</text>
     	<path d='M126 120h93v30H126z' fill='#eee'/>
