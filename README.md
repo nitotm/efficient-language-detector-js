@@ -94,7 +94,7 @@ eld.setLanguageSubset(languagesSubset) // Returns an Object with the subset vali
 // to remove the subset
 eld.setLanguageSubset(false)
 
-// Option 2 ( NOT availible for static eld, with preloaded DB size )
+// Option 2 ( NOT available for static eld, with preloaded DB size )
 // The optimal way to regularly use the same subset, is using saveSubset() to download a new database
 eld.saveSubset(languagesSubset) // ONLY for the Web Browser
 // We can load any Ngrams database saved at src/ngrams/, including subsets. Returns true if success
