@@ -20,17 +20,21 @@ ELD is also available in [Python](https://github.com/nitotm/efficient-language-d
 4. [Benchmarks](#benchmarks)
 5. [Languages](#languages)
 
-> Changes from v1 to v2
-> - `dynamicLangSubset()` is now called `setLanguageSubset()`  
-> - `cleanText()` is now called `enableTextCleanup()`  
-> - `loadNgrams()` is now called `load()`  
+> **Changes from v1 to v2**  
 > 
-> You can now import, static eld with a specific database size:  
+> You can now import static eld with a specific database size:  
 > `import { eld } from 'eld/large';`  
 > 
 > For dynamic import, you have to load a database to initialize:  
 > `import { eld } from 'eld';`  
 > `await eld.load('large')`
+>
+> More clear function names (old available, but deprecated)
+> - `dynamicLangSubset()` is now called `setLanguageSubset()`
+> - `cleanText()` is now called `enableTextCleanup()`
+> - `loadNgrams()` is now called `load()`
+> 
+> ELD is now faster and more accurate.
 
 ## Install
 
@@ -43,39 +47,38 @@ $ npm install eld
 
 ## How to use?
 
-### Import ELD
-
-- At Node.js REPL
-```javascript
-const { eld } = await import('eld')
-```
+### Import *static* ELD
+Importing a static, fixed size eld database. Options: `'eld/large'`, `'eld/medium'`, `'eld/small'`, `'eld/extrasmall'`
 - At Node.js
 ```javascript
-import { eld } from 'eld' // use .mjs extension for version <18
+import { eld } from 'eld/large' // use .mjs extension for version <18
+```
+- At Node.js REPL
+```javascript
+const { eld } = await import('eld/large')
 ```
 - At the Web Browser
 
 ```html
 <script type="module" charset="utf-8">
-    import { eld } from './src/entries/dynamic.js' // Update path.
+    import { eld } from './src/entries/static.large.js' // Update path.
+    // './src/entries/dynamic.js' for dynamic eld
 </script>
 ```
-- To load the pre-built minified version, which is not a module.
+- To load a pre-built minified version *(iife)*, it is not a module. Included at /minified (GitHub)
 ```html
 <script src="minified/eld.xs.min.js" charset="utf-8"></script>
 ```
-- To load a static, fixed size database eld. Options: `'eld/large'`, `'eld/medium'`, `'eld/small'`, `'eld/extrasmall'`. Node.js example
-```javascript
-import { eld } from 'eld/large'
-```
-
-### Usage
-If we use standard `'eld'` (dynamic), we need to `load()` a database to initialize.  
-It is Not necessary for static size imports or bundles like `'eld/large'`  
+### Import ELD *(dynamic)*
+If we use dynamic `'eld'`, we need to `load()` a database to initialize.   
 Available sizes: `'large'`, `'medium'`, `'small'` & `'extrasmall'`
+- Node.js example (Works also with all options displayed at *static* import)
 ```javascript
+import { eld } from 'eld' // use .mjs extension for version <18
 await eld.load('large') // Not available for static eld with preloaded database
 ```
+### Usage
+
 `detect()` expects a UTF-8 string, and returns an object, with a `language` variable, with a ISO 639-1 code or empty string
 ```javascript
 console.log( eld.detect('Hola, cómo te llamas?') )
@@ -118,7 +121,7 @@ Using folder path:
 For non-module iife browser scripts: 	
 `npx esbuild --bundle --format=iife --global-name=__eld_module src/entries/static.extrasmall.js > eld.xs.js --footer:js="globalThis.eld = __eld_module.default;"`
 
-For a client side solution, I included at \/minified an iife bundle file size XS, which still performs great for sentences.  
+For a client side solution, I included at \/minified (*GitHub*) an iife bundle file size XS, which still performs great for sentences.  
 The XS version weights 940kb, when gzipped it's only 264kb.
 
 ## Benchmarks
@@ -142,9 +145,9 @@ These are the results, first, accuracy and then execution time.
 <!-- Accuracy table
 |                     | Tweets       | Big test     | Sentences    | Word pairs   | Single words |
 |:--------------------|:------------:|:------------:|:------------:|:------------:|:------------:|
+| **Nito-ELD-XS**     | 99.3%        | 99.5%        | 98.7%        | 84.9%        | 67.1%        |
 | **Nito-ELD-M**      | 99.4%        | 99.6%        | 99.1%        | 88.4%        | 73.8%        |
 | **Nito-ELD-L**      | 99.7%        | 99.7%        | 99.2%        | 90.4%        | 76.9%        |
-| **Nito-ELD-XS**     | 99.3%        | 99.5%        | 98.7%        | 84.9%        | 67.1%        |
 | **Lingua**          | 98.8%        | 99.1%        | 98.6%        | 93.1%        | 80.0%        |
 | **CLD2**            | 93.8%        | 97.2%        | 97.2%        | 87.7%        | 69.6%        |
 | **Lingua low**      | 96.0%        | 97.2%        | 96.3%        | 83.7%        | 68.0%        |
@@ -156,9 +159,9 @@ These are the results, first, accuracy and then execution time.
 <!--- Time table
 |                     | Tweets       | Big test     | Sentences    | Word pairs   | Single words |
 |:--------------------|:------------:|:------------:|:------------:|:------------:|:------------:|
-| **Nito-ELD-M-js**   |     0.38"    |      3.4"    |      2.9"    |     0.73"    |     0.57"    |
-| **Nito-ELD-L-js**   |     0.40"    |      3.6"    |      3.0"    |     0.73"    |     0.61"    |
-| **Nito-ELD-XS-js**  |     0.38"    |      3.3"    |      2.7"    |     0.67"    |     0.51"    |
+| **Nito-ELD-XS**     |     0.38"    |      3.3"    |      2.7"    |     0.67"    |     0.51"    |
+| **Nito-ELD-M**      |     0.38"    |      3.4"    |      2.9"    |     0.73"    |     0.57"    |
+| **Nito-ELD-L**      |     0.40"    |      3.6"    |      3.0"    |     0.73"    |     0.61"    |
 | **Lingua**          |  4790"       |  24000"      |  18700"      |  8450"       |  6700"       |
 | **CLD2**            |     0.35"    |      2"      |      1.7"    |     0.98"    |     0.8"     |
 | **Lingua low**      |    64"       |    370"      |    308"      |   108"       |    85"       |
@@ -172,7 +175,7 @@ These are the results, first, accuracy and then execution time.
 <sup style="color:#08e">2.</sup> <sup style="color:#777">CLD2 and CLD3, return a list of languages, the ones not included in this test where discarded, but usually they return one language, I believe they have a disadvantage. 
 Also, I confirm the results of CLD2 for short text are correct, contrary to the test on the *Lingua* page, they did not use the parameter "bestEffort = True", their benchmark for CLD2 is unfair.  
   
-The RAM memory usage for each DB size is, aprox. XS: *37MB*, S: *54MB*, M: *71MB*, L: *138MB*.
+The RAM memory usage for each DB size is XS: *37MB*, S: *54MB*, M: *71MB*, L: *138MB*.
 
 ## Languages
 
