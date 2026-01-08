@@ -1,145 +1,145 @@
-<svg xmlns='http://www.w3.org/2000/svg' font-family='Arial, Helvetica, sans-serif' font-size='17' viewBox='0 0 600 301'>
-  <path d='M0 0h600v350H0z' fill='#fff'/>
-  <text fill='#555' transform='translate(30 16)'>
-    <tspan x='0' y='0'>Seconds</tspan>
+<svg xmlns="http://www.w3.org/2000/svg" font-family="Arial, Helvetica, sans-serif" font-size="17" viewBox="0 0 600 301">
+  <path d="M0 0h600v350H0z" fill="#fff"/>
+  <text fill="#555" transform="translate(30 16)">
+    <tspan x="0" y="0">Seconds</tspan>
   </text>
-	<text transform='translate(4 52)'>Nito-ELD-XS</text>
-    	<path d='M126 30h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 52)'>0.38"</text>
-		<path d='M219 30h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 52)'>3.3"</text>
-		<path d='M312 30h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 52)'>2.7"</text>
-		<path d='M405 30h93v30H405z' fill='#dfd'/>
-	<text transform='translate(411 52)'>0.67"</text>
-		<path d='M498 30h102v30H498z' fill='#dfd'/>
-	<text transform='translate(504 52)'>0.51"</text>
+  <text transform="translate(4 52)">Nito-ELD-XS</text>
+  		<path d="M126 30h93v30H126z" fill="#dfd"/>
+	<text transform="translate(132 52)">0.5"</text>
+		<path d="M219 30h93v30H219z" fill="#dfd"/>
+	<text transform="translate(225 52)">4.6"</text>
+		<path d="M312 30h93v30H312z" fill="#dfd"/>
+	<text transform="translate(318 52)">4"</text>
+		<path d="M405 30h93v30H405z" fill="#dfd"/>
+	<text transform="translate(411 52)">1.1"</text>
+		<path d="M498 30h102v30H498z" fill="#dfd"/>
+	<text transform="translate(504 52)">0.71"</text>
 	
-  <text transform='translate(4 82)'>Nito-ELD-M</text>
-  		<path d='M126 60h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 82)'>0.38"</text>
-		<path d='M219 60h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 82)'>3.4"</text>
-		<path d='M312 60h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 82)'>2.9"</text>
-		<path d='M405 60h93v30H405z' fill='#dfd'/>
-	<text transform='translate(411 82)'>0.73"</text>
-		<path d='M498 60h102v30H498z' fill='#dfd'/>
-	<text transform='translate(504 82)'>0.57"</text>
+	 <text transform="translate(4 82)">Nito-ELD-M</text>
+  		<path d="M126 60h93v30H126z" fill="#dfd"/>
+	<text transform="translate(132 82)">0.58"</text>
+		<path d="M219 60h93v30H219z" fill="#dfd"/>
+	<text transform="translate(225 82)">5.1"</text>
+		<path d="M312 60h93v30H312z" fill="#dfd"/>
+	<text transform="translate(318 82)">4.3"</text>
+		<path d="M405 60h93v30H405z" fill="#dfd"/>
+	<text transform="translate(411 82)">1.2"</text>
+		<path d="M498 60h102v30H498z" fill="#dfd"/>
+	<text transform="translate(504 82)">0.73"</text>   
 	
-	 <text transform='translate(4 112)'>Nito-ELD-L</text>
-  		<path d='M126 90h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 112)'>0.40"</text>
-		<path d='M219 90h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 112)'>3.6"</text>
-		<path d='M312 90h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 112)'>3.0"</text>
-		<path d='M405 90h93v30H405z' fill='#dfd'/>
-	<text transform='translate(411 112)'>0.73"</text>
-		<path d='M498 90h102v30H498z' fill='#dfd'/>
-	<text transform='translate(504 112)'>0.61"</text>   
+	<text transform="translate(4 112)">Nito-ELD-L</text>
+    	<path d="M126 90h93v30H126z" fill="#dfd"/>
+	<text transform="translate(132 112)">0.59"</text>
+		<path d="M219 90h93v30H219z" fill="#dfd"/>
+	<text transform="translate(225 112)">5.2"</text>
+		<path d="M312 90h93v30H312z" fill="#dfd"/>
+	<text transform="translate(318 112)">4.5"</text>
+		<path d="M405 90h93v30H405z" fill="#dfd"/>
+	<text transform="translate(411 112)">1.2"</text>
+		<path d="M498 90h102v30H498z" fill="#dfd"/>
+	<text transform="translate(504 112)">0.77"</text>
 	
-  <text transform='translate(4 142)'>Lingua</text>
-    	<path d='M126 120h93v30H126z' fill='#eee'/>
-	<text transform='translate(132 142)'>4790"</text>
-		<path d='M219 120h93v30H219z' fill='#eee'/>
-	<text transform='translate(225 142)'>24000"</text>
-		<path d='M312 120h93v30H312z' fill='#eee'/>
-	<text transform='translate(318 142)'>18700"</text>
-		<path d='M405 120h93v30H405z' fill='#eee'/>
-	<text transform='translate(411 142)'>8450"</text>
-		<path d='M498 120h102v30H498z' fill='#eee'/>
-	<text transform='translate(504 142)'>6700"</text>
+  <text transform="translate(4 142)">Lingua</text>
+    	<path d="M126 120h93v30H126z" fill="#eee"/>
+	<text transform="translate(132 142)">4790"</text>
+		<path d="M219 120h93v30H219z" fill="#eee"/>
+	<text transform="translate(225 142)">24000"</text>
+		<path d="M312 120h93v30H312z" fill="#eee"/>
+	<text transform="translate(318 142)">18700"</text>
+		<path d="M405 120h93v30H405z" fill="#eee"/>
+	<text transform="translate(411 142)">8450"</text>
+		<path d="M498 120h102v30H498z" fill="#eee"/>
+	<text transform="translate(504 142)">6700"</text>
 	
-  <text transform='translate(4 172)'>CLD2</text>
-		<path d='M126 150h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 172)'>0.35"</text>
-		<path d='M219 150h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 172)'>2"</text>
-		<path d='M312 150h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 172)'>1.7"</text>
-		<path d='M405 150h93v30H405z' fill='#dfd'/>
-	<text transform='translate(411 172)'>0.98"</text>
-		<path d='M498 150h102v30H498z' fill='#dfd'/>
-	<text transform='translate(504 172)'>0.8"</text>
+  <text transform="translate(4 172)">CLD2</text>
+		<path d="M126 150h93v30H126z" fill="#dfd"/>
+	<text transform="translate(132 172)">0.35"</text>
+		<path d="M219 150h93v30H219z" fill="#dfd"/>
+	<text transform="translate(225 172)">2"</text>
+		<path d="M312 150h93v30H312z" fill="#dfd"/>
+	<text transform="translate(318 172)">1.7"</text>
+		<path d="M405 150h93v30H405z" fill="#dfd"/>
+	<text transform="translate(411 172)">0.98"</text>
+		<path d="M498 150h102v30H498z" fill="#dfd"/>
+	<text transform="translate(504 172)">0.8"</text>
 	
-  <text transform='translate(4 202)'>Lingua low</text>
-		<path d='M126 180h93v30H126z' fill='#fee'/>
-	<text transform='translate(132 202)'>64"</text>
-		<path d='M219 180h93v30H219z' fill='#fee'/>
-	<text transform='translate(225 202)'>370"</text>
-		<path d='M312 180h93v30H312z' fill='#fee'/>
-	<text transform='translate(318 202)'>308"</text>
-		<path d='M405 180h93v30H405z' fill='#fee'/>
-	<text transform='translate(411 202)'>108"</text>
-		<path d='M498 180h102v30H498z' fill='#fee'/>
-	<text transform='translate(504 202)'>85"</text>  
+  <text transform="translate(4 202)">Lingua low</text>
+		<path d="M126 180h93v30H126z" fill="#fee"/>
+	<text transform="translate(132 202)">64"</text>
+		<path d="M219 180h93v30H219z" fill="#fee"/>
+	<text transform="translate(225 202)">370"</text>
+		<path d="M312 180h93v30H312z" fill="#fee"/>
+	<text transform="translate(318 202)">308"</text>
+		<path d="M405 180h93v30H405z" fill="#fee"/>
+	<text transform="translate(411 202)">108"</text>
+		<path d="M498 180h102v30H498z" fill="#fee"/>
+	<text transform="translate(504 202)">85"</text>  
 	
-  <text transform='translate(4 232)'>CLD3</text>
-		<path d='M126 210h93v30H126z' fill='#ffc'/>
-	<text transform='translate(132 232)'>3.9"</text>
-		<path d='M219 210h93v30H219z' fill='#ffc'/>
-	<text transform='translate(225 232)'>29"</text>
-		<path d='M312 210h93v30H312z' fill='#ffc'/>
-	<text transform='translate(318 232)'>26"</text>
-		<path d='M405 210h93v30H405z' fill='#ffc'/>
-	<text transform='translate(411 232)'>12"</text>
-		<path d='M498 210h102v30H498z' fill='#ffc'/>
-	<text transform='translate(504 232)'>11"</text>    
+  <text transform="translate(4 232)">CLD3</text>
+		<path d="M126 210h93v30H126z" fill="#ffc"/>
+	<text transform="translate(132 232)">3.9"</text>
+		<path d="M219 210h93v30H219z" fill="#ffc"/>
+	<text transform="translate(225 232)">29"</text>
+		<path d="M312 210h93v30H312z" fill="#ffc"/>
+	<text transform="translate(318 232)">26"</text>
+		<path d="M405 210h93v30H405z" fill="#ffc"/>
+	<text transform="translate(411 232)">12"</text>
+		<path d="M498 210h102v30H498z" fill="#ffc"/>
+	<text transform="translate(504 232)">11"</text>    
 	
-  <text transform='translate(4 262)'>franc</text>
-		<path d='M126 240h93v30H126z' fill='#ffc'/>
-	<text transform='translate(132 262)'>1.2"</text>
-		<path d='M219 240h93v30H219z' fill='#ffc'/>
-	<text transform='translate(225 262)'>8"</text>
-		<path d='M312 240h93v30H312z' fill='#ffc'/>
-	<text transform='translate(318 262)'>7.8"</text>
-		<path d='M405 240h93v30H405z' fill='#ffc'/>
-	<text transform='translate(411 262)'>2.8"</text>
-		<path d='M498 240h102v30H498z' fill='#ffc'/>
-	<text transform='translate(504 262)'>2"</text>   
+  <text transform="translate(4 262)">franc</text>
+		<path d="M126 240h93v30H126z" fill="#ffc"/>
+	<text transform="translate(132 262)">1.2"</text>
+		<path d="M219 240h93v30H219z" fill="#ffc"/>
+	<text transform="translate(225 262)">8"</text>
+		<path d="M312 240h93v30H312z" fill="#ffc"/>
+	<text transform="translate(318 262)">7.8"</text>
+		<path d="M405 240h93v30H405z" fill="#ffc"/>
+	<text transform="translate(411 262)">2.8"</text>
+		<path d="M498 240h102v30H498z" fill="#ffc"/>
+	<text transform="translate(504 262)">2"</text>   
 	
 	
-	 <text transform='translate(4 292)'>Nito-ELD-php</text>
-  		<path d='M126 270h93v30H126z' fill='#dfd'/>
-	<text transform='translate(132 292)'>0.31"</text>
-		<path d='M219 270h93v30H219z' fill='#dfd'/>
-	<text transform='translate(225 292)'>2.5"</text>
-		<path d='M312 270h93v30H312z' fill='#dfd'/>
-	<text transform='translate(318 292)'>2.2"</text>
-		<path d='M405 270h93v30H405z' fill='#dfd'/>
-	<text transform='translate(411 292)'>0.66"</text>
-		<path d='M498 270h102v30H498z' fill='#dfd'/>
-	<text transform='translate(504 292)'>0.48"</text>
+	 <text transform="translate(4 292)">Nito-ELD-php</text>
+  		<path d="M126 270h93v30H126z" fill="#dfd"/>
+	<text transform="translate(132 292)">0.31"</text>
+		<path d="M219 270h93v30H219z" fill="#dfd"/>
+	<text transform="translate(225 292)">2.5"</text>
+		<path d="M312 270h93v30H312z" fill="#dfd"/>
+	<text transform="translate(318 292)">2.2"</text>
+		<path d="M405 270h93v30H405z" fill="#dfd"/>
+	<text transform="translate(411 292)">0.66"</text>
+		<path d="M498 270h102v30H498z" fill="#dfd"/>
+	<text transform="translate(504 292)">0.48"</text>
 	
-	<g fill='#e0e0e0'>
-	  <path d='M0 0h600v1H0z'/>
-	  <path d='M0 30h600v1H0z'/>
-	  <path d='M0 60h600v1H0z'/>
-	  <path d='M0 90h600v1H0z'/>
-	  <path d='M0 120h600v1H0z'/>
-	  <path d='M0 150h600v1H0z'/>
-	  <path d='M0 180h600v1H0z'/>
-	  <path d='M0 210h600v1H0z'/>
-	  <path d='M0 240h600v1H0z'/>
-	  <path d='M0 270h600v1H0z'/>
+	<g fill="#e0e0e0">
+	  <path d="M0 0h600v1H0z"/>
+	  <path d="M0 30h600v1H0z"/>
+	  <path d="M0 60h600v1H0z"/>
+	  <path d="M0 90h600v1H0z"/>
+	  <path d="M0 120h600v1H0z"/>
+	  <path d="M0 150h600v1H0z"/>
+	  <path d="M0 180h600v1H0z"/>
+	  <path d="M0 210h600v1H0z"/>
+	  <path d="M0 240h600v1H0z"/>
+	  <path d="M0 270h600v1H0z"/>
 	</g>
-	<g x='0' y='0' font-size='16' font-weight='700'>
-	  <text transform='translate(130 21)'>
+	<g x="0" y="0" font-size="16" font-weight="700">
+	  <text transform="translate(130 21)">
 		 <tspan>Tweets</tspan>
 	  </text>
-	  <text transform='translate(223 21)'>
+	  <text transform="translate(223 21)">
 		 <tspan>Big test</tspan>
 	  </text>
-	  <text transform='translate(316 21)'>
+	  <text transform="translate(316 21)">
 		 <tspan>Sentences</tspan>
 	  </text>
-	  <text transform='translate(409 21)'>
+	  <text transform="translate(409 21)">
 		 <tspan>Word pairs</tspan>
 	  </text>
-	  <text font-size='15.4' transform='translate(502 21)'>
+	  <text font-size="15.4" transform="translate(502 21)">
 		 <tspan>Single words</tspan>
 	  </text>
 	</g>
-  <path d='M0 0h1v300H0zm126 0h1v300h-1zm93 0h1v300h-1zm93 0h1v300h-1zm93 0h1v300h-1zm93 0h1v300h-1zm101 0h1v300h-1zM0 300h600v1H0z' fill='#e0e0e0'/>
+  <path d="M0 0h1v300H0zm126 0h1v300h-1zm93 0h1v300h-1zm93 0h1v300h-1zm93 0h1v300h-1zm93 0h1v300h-1zm101 0h1v300h-1zM0 300h600v1H0z" fill="#e0e0e0"/>
 </svg>

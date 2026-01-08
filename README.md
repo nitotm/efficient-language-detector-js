@@ -118,7 +118,7 @@ Build and minify static size example, with esbuild + terser. With npm package in
 Using folder path:  
 `npx esbuild --bundle --format=esm src/entries/static.large.js > eld.large.js`    
   
-For non-module iife browser scripts: 	
+For non-module iife browser scripts:  
 `npx esbuild --bundle --format=iife --global-name=__eld_module src/entries/static.extrasmall.js > eld.xs.js --footer:js="globalThis.eld = __eld_module.default;"`
 
 For a client side solution, I included at \/minified (*GitHub*) an iife bundle file size XS, which still performs great for sentences.  
@@ -154,7 +154,7 @@ These are the results, first, accuracy and then execution time.
 | **CLD3**            | 92.2%        | 95.8%        | 94.7%        | 69.0%        | 51.5%        |
 | **franc**           | 89.8%        | 92.0%        | 90.5%        | 65.9%        | 52.9%        |
 -->
-<img alt="accuracy table" width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/misc/table_accuracy_js.svg">
+<img alt="accuracy table" width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/misc/table_accuracy_js_v2.svg">
 
 <!--- Time table
 |                     | Tweets       | Big test     | Sentences    | Word pairs   | Single words |
@@ -169,7 +169,7 @@ These are the results, first, accuracy and then execution time.
 | **franc**           |     1.2"     |      8"      |      7.8"    |     2.8"     |     2"       |
 | **Nito-ELD-php**    |     0.31"    |      2.5"    |      2.2"    |     0.66"    |     0.48"    |
 -->
-<img alt="time table" width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/misc/table_time_js.svg">
+<img alt="time table" width="800" src="https://raw.githubusercontent.com/nitotm/efficient-language-detector-js/main/misc/table_time_js_v2.svg">
 
 <sup style="color:#08e">1.</sup> <sup style="color:#777">Lingua could have a small advantage as it participates with 54 languages, 6 less.</sup>  
 <sup style="color:#08e">2.</sup> <sup style="color:#777">CLD2 and CLD3, return a list of languages, the ones not included in this test where discarded, but usually they return one language, I believe they have a disadvantage. 
