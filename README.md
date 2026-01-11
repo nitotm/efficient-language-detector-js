@@ -29,12 +29,14 @@ ELD is also available in [Python](https://github.com/nitotm/efficient-language-d
 > `import { eld } from 'eld';`  
 > `await eld.load('large')`
 >
+> - ELD is now 1.5x faster, and more accurate.
+> - TypeScript type definitions exported.
+> - **npm** install size reduced by a 70%.
+> 
 > More clear function names (old available, but deprecated)
 > - `dynamicLangSubset()` is now called `setLanguageSubset()`
 > - `cleanText()` is now called `enableTextCleanup()`
 > - `loadNgrams()` is now called `load()`
-> 
-> ELD is now faster and more accurate.
 
 ## Install
 
