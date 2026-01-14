@@ -57,17 +57,16 @@ function detect(text) {
 
     const byteWords = textProcessor(text)
     const byteNgrams = getByteNgrams(byteWords)
-    const numNgrams = Object.keys(byteNgrams).length
     let results = calculateScores(byteNgrams)
-    let language = ''
 
     if (subset) {
         results = filterLangSubset(results)
     }
 
-    let langID = getMaxLang(results)
+    const langID = getMaxLang(results)
     if (langID !== false) {
-        language = languageData.langCodes[langID]
+        const language = languageData.langCodes[langID]
+        const numNgrams = Object.keys(byteNgrams).length
         return new LanguageResult(language, results, numNgrams, languageData.langCodes)
     }
 
@@ -121,7 +120,6 @@ function textProcessor(text) {
  */
 function getByteNgrams(words) {
     let byteNgrams = {}
-    let countNgrams = 0
     let thisBytes
     let j
 
@@ -132,13 +130,12 @@ function getByteNgrams(words) {
             len = 70
         }
         // 4 bytes ngram length, 3 bytes stride
-        for (j = 0; j + 4 < len; j += 3, ++countNgrams) {
+        for (j = 0; j + 4 < len; j += 3) {
             thisBytes = (j === 0 ? ' ' : '') + word.substring(j, j + 4)
             byteNgrams[thisBytes] = true
         }
         thisBytes = (j === 0 ? ' ' : '') + word.substring(len !== 3 ? len - 4 : 0) + ' '
         byteNgrams[thisBytes] = true
-        countNgrams++
     }
     return byteNgrams
 }

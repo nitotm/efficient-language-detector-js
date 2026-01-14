@@ -181,7 +181,7 @@ The RAM memory usage for each DB size is XS: *37MB*, S: *54MB*, M: *71MB*, L: *1
 
 ## Languages
 
-These are the *ISO 639-1 codes* of the 60 supported languages for *Nito-ELD* v1
+These are the *ISO 639-1 codes* of the 60 supported languages for *Nito-ELD*
 
 > 'am', 'ar', 'az', 'be', 'bg', 'bn', 'ca', 'cs', 'da', 'de', 'el', 'en', 'es', 'et', 'eu', 'fa', 'fi', 'fr', 'gu', 'he', 'hi', 'hr', 'hu', 'hy', 'is', 'it', 'ja', 'ka', 'kn', 'ko', 'ku', 'lo', 'lt', 'lv', 'ml', 'mr', 'ms', 'nl', 'no', 'or', 'pa', 'pl', 'pt', 'ro', 'ru', 'sk', 'sl', 'sq', 'sr', 'sv', 'ta', 'te', 'th', 'tl', 'tr', 'uk', 'ur', 'vi', 'yo', 'zh'
 
