@@ -44,7 +44,10 @@
     "natural-language",
     "language-detection",
     "language-detector",
-    "language-identification"
+    "language-identification",
+    "frontend",
+    "front-end",
+    "backend"
   ],
   "author": {
     "name": "Nito T.M.",
