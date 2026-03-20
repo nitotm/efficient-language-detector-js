@@ -90,7 +90,7 @@ function enableTextCleanup(bool) {
  */
 function getCleanTxt(str) {
     // Remove URLS
-    str = str.replace(/[hw]((ttps?:\/\/(www\.)?)|ww\.)([^\s/?.#-]+\.?)+(\/\S*)?/gi, ' ')
+    str = str.replace(/[hw](?:(?:ttps?:\/\/(?:www\.)?)|ww\.)[^\s]+/gi, ' ')
     // Remove emails
     str = str.replace(/[a-zA-Z0-9.!$%&’+_`-]+@[A-Za-z0-9.-]+\.[A-Za-z0-9-]{2,64}/g, ' ')
     // Remove .com domains
