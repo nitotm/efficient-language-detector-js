@@ -9,6 +9,11 @@
 	
 </div>
 
+**What is a language detector?**  
+It is a tool that identifies which language a text is written in. For example, `detect("Hola")` returns "es" for Spanish.
+
+---
+
 Efficient language detector (*Nito-ELD* or *ELD*) is a fast and accurate language detector, is one of the fastest non compiled detectors, while its accuracy is within the range of the heaviest and slowest detectors.
 
 It's 100% JavaScript (vanilla), easy installation and no dependencies.  
@@ -130,14 +135,14 @@ The XS version weights 940kb, when gzipped it's only 264kb.
 
 I compared *ELD* with a different variety of detectors.
 
-| URL                                                       | Version       | Language     |
-|:----------------------------------------------------------|:--------------|:-------------|
-| https://github.com/nitotm/efficient-language-detector-js/ | 2.0.0         | Javascript   |
-| https://github.com/nitotm/efficient-language-detector/    | 1.0.0         | PHP          |
-| https://github.com/pemistahl/lingua-py                    | 1.3.2         | Python       |
-| https://github.com/CLD2Owners/cld2                        | Aug 21, 2015  | C++          |
-| https://github.com/google/cld3                            | Aug 28, 2020  | C++          |
-| https://github.com/wooorm/franc                           | 6.1.0         | Javascript   |
+| URL                                                       | Version       | Core Language |
+|:----------------------------------------------------------|:--------------|:--------------|
+| https://github.com/nitotm/efficient-language-detector-js/ | 2.0.0         | Javascript    |
+| https://github.com/nitotm/efficient-language-detector/    | 1.0.0         | PHP           |
+| https://github.com/pemistahl/lingua-py                    | 1.3.2         | Python        |
+| https://github.com/CLD2Owners/cld2                        | Aug 21, 2015  | C++           |
+| https://github.com/google/cld3                            | Aug 28, 2020  | C++           |
+| https://github.com/wooorm/franc                           | 6.1.0         | Javascript    |
 
 <sup>Benchmarks: **Tweets**: *760KB*, short sentences of 140 chars max.; **Big test**: *10MB*, sentences in all 60 languages supported; **Sentences**: *8MB*, this is the *Lingua* sentences test, minus unsupported languages.  
 Short sentences is what *ELD* and most detectors focus on, as very short text is unreliable, but I included the *Lingua* **Word pairs** *1.5MB*, and **Single words** *880KB* tests to see how they all compare beyond their reliable limits.</sup>
