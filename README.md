@@ -144,8 +144,8 @@ I compared *ELD* with a different variety of detectors.
 | https://github.com/google/cld3                            | Aug 28, 2020  | C++           |
 | https://github.com/wooorm/franc                           | 6.1.0         | Javascript    |
 
-<sup>Benchmarks: **Tweets**: *760KB*, short sentences of 140 chars max.; **Big test**: *10MB*, sentences in all 60 languages supported; **Sentences**: *8MB*, this is the *Lingua* sentences test, minus unsupported languages.  
-Short sentences is what *ELD* and most detectors focus on, as very short text is unreliable, but I included the *Lingua* **Word pairs** *1.5MB*, and **Single words** *880KB* tests to see how they all compare beyond their reliable limits.</sup>
+<sup>Benchmarks: **Tweets**: *700KB*, short sentences of 140 chars max.; **Big test**: *10MB*, sentences in all 60 languages supported; **Sentences**: *8MB*, this is the *Lingua* sentences test, minus unsupported languages.  
+Short sentences is what *ELD* and most detectors focus on, as very short text is unreliable, but I included the *Lingua* **Word pairs** *1.5MB*, and **Single words** *800KB* tests to see how they all compare beyond their reliable limits.</sup>
 
 These are the results, first, accuracy and then execution time.
 
