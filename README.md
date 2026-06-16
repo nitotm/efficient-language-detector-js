@@ -10,7 +10,7 @@
 </div>
 
 **What is a language detector?**  
-It is a tool that identifies which language a text is written in. For example, `detect("Hola")` returns "es" for Spanish.
+It is a tool that identifies which language a text is written in. For example, `detect("Gracias")` returns "es" for Spanish.
 
 ---
 
