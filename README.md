@@ -17,7 +17,7 @@ It is a tool that identifies which language a text is written in. For example, `
 Efficient language detector (*Nito-ELD* or *ELD*) is a fast and accurate language detector, is one of the fastest non compiled detectors, while its accuracy is within the range of the heaviest and slowest detectors.
 
 It's 100% JavaScript (vanilla), easy installation and no dependencies.  
-ELD is also available in [Python](https://github.com/nitotm/efficient-language-detector-py) and [PHP](https://github.com/nitotm/efficient-language-detector).
+ELD is also available in [PHP](https://github.com/nitotm/efficient-language-detector) (v3), [C Library](https://github.com/nitotm/eldc) (v3, includes Python package & executable), and an outdated [Python](https://github.com/nitotm/efficient-language-detector-py) (v1) implementation. ELD JavaScript is v2.
 
 1. [Install](#install)
 2. [How to use](#how-to-use)
