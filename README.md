@@ -1,7 +1,8 @@
 # Efficient Language Detector
 
 <div align="center">
-	
+
+![downloads](https://img.shields.io/npm/dm/eld)
 ![supported Javascript versions](https://img.shields.io/badge/JS-%3E%3D%20ES2015-blue)
 ![supported Javascript versions](https://img.shields.io/badge/Node.js-%3E%3D%2016-blue)
 [![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
