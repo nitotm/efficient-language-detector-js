@@ -17,4 +17,4 @@ try {
 
 export const separators = separatorsRegex;
 
-export const matchDomains = new RegExp('([A-Za-z0-9-]+.)+com(/S*|[^' + unicodeRegex.L.bmp + '])', 'g')
+export const matchDomains = new RegExp('([A-Za-z0-9-]+\\.)+com(\\/\\S*|[^' + unicodeRegex.L.bmp + '])', 'g')
