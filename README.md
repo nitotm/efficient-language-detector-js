@@ -26,24 +26,6 @@ ELD is also available in [PHP](https://github.com/nitotm/efficient-language-dete
 4. [Benchmarks](#benchmarks)
 5. [Languages](#languages)
 
-> **Changes from v1 to v2**  
-> 
-> You can now import static eld with a specific database size:  
-> `import { eld } from 'eld/large';`  
-> 
-> For dynamic import, you have to load a database to initialize:  
-> `import { eld } from 'eld';`  
-> `await eld.load('large')`
->
-> - ELD is now 1.5x faster, and more accurate.
-> - TypeScript type definitions exported.
-> - **npm** install size reduced by a 70%.
-> 
-> More clear function names (old available, but deprecated)
-> - `dynamicLangSubset()` is now called `setLanguageSubset()`
-> - `cleanText()` is now called `enableTextCleanup()`
-> - `loadNgrams()` is now called `load()`
-
 ## Install
 
 - For *Node.js*
@@ -83,18 +65,25 @@ Available sizes: `'large'`, `'medium'`, `'small'` & `'extrasmall'`
 - Node.js example (Works also with all options displayed at *static* import)
 ```javascript
 import { eld } from 'eld' // use .mjs extension for version <18
-await eld.load('large') // Not available for static eld with preloaded database
+const detector = eld.newInstance() // Isolated settings instance (Introduced in v2.1.0)
+await detector.load('large') // Unavailable for static eld with preloaded database
+// await eld.load('large') We can also load a database at global instance
 ```
 ### Usage
 
 `detect()` expects a UTF-8 string, and returns an object, with a `language` variable, with a ISO 639-1 code or empty string
 ```javascript
-console.log( eld.detect('Hola, cómo te llamas?') )
+const detector = eld.newInstance() // Isolated configuration instance. (Instances introduced in v2.1.0)
+console.log( detector.detect('Hola, cómo te llamas?') )
 // { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
 // returns { language: string, getScores(): Object, isReliable(): boolean } 
 
-console.log( eld.detect('Hola, cómo te llamas?').language )
+console.log( detector.detect('Hola, cómo te llamas?').language )
 // 'es'
+
+// We can also use eld directly, with shared global settings per entry point type.
+// Dynamic import is one global instance, and each static size is a global instance.
+eld.detect('Hola, cómo te llamas?') // 'es'
 ```
  - To reduce the languages to be detected, there are 2 options, they only need to be executed once. (Check available [languages](#languages) below)
 ```javascript
@@ -102,21 +91,24 @@ let languagesSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
 
 // Option 1 
 // Setting setLanguageSubset(), detect() executes normally but finally filters the excluded languages
-eld.setLanguageSubset(languagesSubset) // Returns an Object with the subset validated languages
+detector.setLanguageSubset(languagesSubset) // Returns an Object with the subset validated languages
 // to remove the subset
-eld.setLanguageSubset(false)
+detector.setLanguageSubset(false)
+// The global `eld` instance has all methods and configuration options a `newInstance()` instance has
+eld.setLanguageSubset(languagesSubset)
 
 // Option 2 ( NOT available for static eld, with preloaded DB size )
 // The optimal way to regularly use the same subset, is using saveSubset() to download a new database
-eld.saveSubset(languagesSubset) // ONLY for the Web Browser
+detector.saveSubset(languagesSubset) // ONLY for the Web Browser
 // We can load any Ngrams database saved at src/ngrams/, including subsets. Returns true if success
-await eld.load('medium')
+await detector.load('medium')
 // eld.load('file').then((loaded) => { if (loaded) { } })
 ```
 - Also, we can get the current status of eld: languages, database type and subset
 ```javascript
-  console.log( eld.info() )
+  console.log( detector.info() )
 ```
+
 
 ## Builds
 

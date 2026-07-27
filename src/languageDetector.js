@@ -1,22 +1,149 @@
-﻿/*
+/*
 Copyright 2023 Nito T.M.
 License https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
 Author Nito T.M. (https://github.com/nitotm)
 Package npmjs.com/package/eld
 */
 
-import { languageData } from './languageData.js'
+import { createLanguageData, setNgrams } from './languageData.js'
 import { separators, matchDomains } from './regexPatterns.js'
 import { dictionary } from './dictionary.js'
 import { isoLanguages } from './isoLanguages.js'
 import { LanguageResult } from './LanguageResult.js'
 import { saveLanguageSubset } from './saveLanguageSubset.dev.js'
 
+/** @type {string} */
+const loadError = 'No database loaded, use load()'
 
 // Project is ES2015
-const eld = (function () {
 
-    return {
+/**
+ * Creates a new eld instance: its own loaded database and settings
+ *
+ * Every entry file (src/entries/static.*.js, src/entries/dynamic.js) calls this once at
+ * module-evaluation time to build the object it exports - this is what makes e.g. `eld/large` and
+ * `eld/small` behave independently even when both are imported in the same process.
+ *
+ * `loadData` is returned separately from `instance` on purpose: it's an internal hook used only by
+ * entry files to inject a loaded ngrams database, and is deliberately not attached to the public
+ * `instance` object, since static entries must stay fixed-size (no load() on static imports).
+ *
+ * @returns {{instance: Object, loadData: function(Object): void}}
+ */
+function createEld() {
+    /** @type {Object} This instance's own database, never shared with any other instance */
+    let languageData = createLanguageData()
+
+    /** @type {boolean|Array} */
+    let subset = false
+
+    /** @type {boolean} When true, detect() cleans input text with getCleanTxt() */
+    let doCleanText = false
+
+    /** @type {boolean} Guards against spamming the console in tight loops - warns once per instance */
+    let warnedNonStringInput = false
+
+    /**
+     * detect() identifies the natural language of a UTF-8 string
+     * Returns an object, with a variable named 'language', with an ISO 639-1 code or empty string
+     * { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
+     *
+     * @param {string} text UTF-8
+     * @returns {{language: string, getScores(): Object, isReliable(): boolean}} class LanguageResult
+     */
+    function detect(text) {
+        if (typeof text !== 'string') {
+            if (!warnedNonStringInput) {
+					 // Returning an empty result instead of throwing. Shown once per instance.
+                console.warn('eld: detect() expects a string, received ' + typeof text)
+                warnedNonStringInput = true
+            }
+            return new LanguageResult('', [], 0, {})
+        }
+        if (!languageData.type) throw new Error(loadError)
+
+        text = text.substring(0, 1000)
+
+        if (doCleanText) {
+            // Removes Urls, emails, alphanumerical & numbers
+            text = getCleanTxt(text)
+        }
+
+        const byteWords = textProcessor(text)
+        const byteNgrams = getByteNgrams(byteWords)
+        let results = calculateScores(byteNgrams, languageData)
+
+        if (subset) {
+            results = filterLangSubset(results, subset)
+        }
+
+        const langID = getMaxLang(results)
+        if (langID !== false) {
+            const language = languageData.langCodes[langID]
+            const numNgrams = Object.keys(byteNgrams).length
+            return new LanguageResult(language, results, numNgrams, languageData.langCodes)
+        }
+
+        return new LanguageResult('', [], 0, {})
+    }
+
+    /**
+     * Public function to change doCleanText value
+     *
+     * @param {boolean} bool
+     */
+    function enableTextCleanup(bool) {
+        doCleanText = Boolean(bool)
+    }
+
+    /**
+     * Creates a subset of languages, from which detect() will filter excluded languages from the results
+     * Call setLanguageSubset(false) to delete the subset
+     *
+     * @param {Array|boolean} languages
+     * @returns {Object} Returns list of the validated languages for the new subset
+     */
+    function setLanguageSubset(languages) {
+        subset = makeSubset(languages, languageData)
+        if (subset) {
+            return isoLanguages(subset, languageData.langCodes)
+        }
+        return {}
+    }
+
+    /**
+     * Creates a download, only available for the web browser, with a file containing the ngrams database, of the
+     * validated languages from the array argument. Does not affect this instance's active subset.
+     *
+     * @param {Array} languages
+     */
+    function saveSubset(languages) {
+        const langArray = makeSubset(languages, languageData)
+        saveLanguageSubset.saveSubset(langArray, languageData.ngrams, languageData.langCodes, languageData.type)
+    }
+
+    function info() {
+        return {
+            'Data type': languageData.type,
+            'Languages': languageData.langCodes,
+            'Subset': subset ? isoLanguages(subset, languageData.langCodes) : false,
+            // 'Text cleanup enabled': doCleanText ? 'True' : 'False',
+        }
+    }
+
+    /**
+     * Internal hook, used only by entry files to load a database into THIS instance.
+     * Not exposed on `instance` - see the doc comment on createEld() above.
+     *
+     * @param {Object} data
+     * @returns {string} the loaded database's type, falsy if nothing ended up loaded
+     */
+    function loadData(data) {
+        setNgrams(languageData, data)
+        return languageData.type
+    }
+
+    const instance = {
         detect,
         enableTextCleanup,
         /** @deprecated Use `enableTextCleanup` instead. */
@@ -25,61 +152,11 @@ const eld = (function () {
         /** @deprecated Use `setLanguageSubset` instead. */
         dynamicLangSubset: setLanguageSubset,
         saveSubset,
+		  // getCleanTxt: getCleanTxt,
         info
     }
-})()
 
-/** @type {boolean|Array} */
-let subset = false
-
-/** @type {boolean} When true, detect() cleans input text with getCleanTxt() */
-let doCleanText = false
-
-/** @type {string} */
-let loadError = 'No database loaded, use load()'
-
-/**
- * detect() identifies the natural language of a UTF-8 string
- * Returns an object, with a variable named 'language', with an ISO 639-1 code or empty string
- * { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
- *
- * @param {string} text UTF-8
- * @returns {{language: string, getScores(): Object, isReliable(): boolean}} class LanguageResult
- */
-function detect(text) {
-    if (typeof text !== 'string') return new LanguageResult('', [], 0, {})
-    if (!languageData.type) throw new Error(loadError)
-
-    if (doCleanText) {
-        // Removes Urls, emails, alphanumerical & numbers
-        text = getCleanTxt(text)
-    }
-
-    const byteWords = textProcessor(text)
-    const byteNgrams = getByteNgrams(byteWords)
-    let results = calculateScores(byteNgrams)
-
-    if (subset) {
-        results = filterLangSubset(results)
-    }
-
-    const langID = getMaxLang(results)
-    if (langID !== false) {
-        const language = languageData.langCodes[langID]
-        const numNgrams = Object.keys(byteNgrams).length
-        return new LanguageResult(language, results, numNgrams, languageData.langCodes)
-    }
-
-    return new LanguageResult('', [], 0, {})
-}
-
-/**
- * Public function to change doCleanText value
- *
- * @param {boolean} bool
- */
-function enableTextCleanup(bool) {
-    doCleanText = Boolean(bool)
+    return { instance, loadData }
 }
 
 /**
@@ -105,7 +182,6 @@ function getCleanTxt(str) {
  * @returns {Array}
  */
 function textProcessor(text) {
-    text = text.substring(0, 1000)
     // Normalize special characters/word separators
     text = text.replace(separators, ' ')
     text = text.trim().toLowerCase()
@@ -144,9 +220,10 @@ function getByteNgrams(words) {
  * Calculate scores for each language from the given Ngrams
  *
  * @param {Object} byteNgrams
+ * @param {Object} languageData
  * @returns {Array}
  */
-function calculateScores(byteNgrams) {
+function calculateScores(byteNgrams, languageData) {
     let bytes, lang, thisByte
     let langScore = [...languageData.langScore]
     let baseNgramScore = 53; // In order to reduce DB size we subtract minimum score
@@ -224,9 +301,10 @@ function strToUtf8Bytes(str) {
  * Filters languages not included in the subset, from the result scores
  *
  * @param {Array} results
+ * @param {Array} subset
  * @returns {Array}
  */
-function filterLangSubset(results) {
+function filterLangSubset(results, subset) {
     let subResults = [];
     // const keepSet = new Set(subset);
     for (let i = 0; i < results.length; i++) {
@@ -238,14 +316,17 @@ function filterLangSubset(results) {
 }
 
 /**
- * Validates an expected array of ISO 639-1 language code strings, given by the user, and creates a subset of the valid
- * languages compared against the current database available languages
+ * Validates an expected array of ISO 639-1 language code strings, given by the user, and creates a subset of the
+ * valid languages compared against the current database available languages. Pure function: does not read or
+ * write any instance state, it just computes what the new subset value should be.
  *
  * @param {Array|boolean} languages
+ * @param {Object} languageData
  * @returns {Array|boolean}
  */
-function makeSubset(languages) {
+function makeSubset(languages, languageData) {
     if (!languageData.type) throw new Error(loadError)
+    let subset = false
     if (languages) {
         subset = []
         for (let key in languages) {
@@ -260,37 +341,8 @@ function makeSubset(languages) {
         } else {
             subset = false
         }
-    } else {
-        subset = false
     }
     return subset
-}
-
-/**
- * Creates a subset of languages, from which detect() will filter excluded languages from the results
- * Call setLanguageSubset(false) to delete the subset
- *
- * @param {Array|boolean} languages
- * @returns {Object} Returns list of the validated languages for the new subset
- */
-function setLanguageSubset(languages) {
-    let result = makeSubset(languages)
-    if (result) {
-        return isoLanguages(result, languageData.langCodes)
-    }
-    return {}
-}
-
-/**
- * Creates a download, only available for the web browser, with a file containing the ngrams database, of the validated
- * languages from the array argument
- *
- * @param {Array} languages
- */
-function saveSubset(languages) {
-    const langArray = makeSubset(languages)
-    makeSubset(false) // remove the global subset, we only need the filtered langArray
-    saveLanguageSubset.saveSubset(langArray, languageData.ngrams, languageData.langCodes, languageData.type)
 }
 
 function getMaxLang(obj) {
@@ -307,12 +359,4 @@ function getMaxLang(obj) {
     return maxKey;
 }
 
-function info() {
-    return {
-        'Data type': languageData.type,
-        'Languages': languageData.langCodes,
-        'Subset': subset ? isoLanguages(subset, languageData.langCodes) : false
-    }
-}
-
-export { eld };
+export { createEld };

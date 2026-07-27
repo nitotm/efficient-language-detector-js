@@ -1,8 +1,21 @@
-import { setNgrams } from '../languageData.js';
-import { ngramsData } from '../ngrams/medium.js';
-import { eld } from '../languageDetector.js';
+import { createEld } from '../languageDetector.js'
+import { ngramsData } from '../ngrams/medium.js'
 
-setNgrams(ngramsData);
+/**
+ * Builds one independent, fully preloaded 'medium' eld instance. Called once at module-evaluation
+ * time for the default export, and again by newInstance() for anyone who explicitly wants another
+ * isolated 'medium' instance (its own subset / text-cleanup settings) in the same process.
+ *
+ * @returns {Object}
+ */
+function build() {
+    const { instance, loadData } = createEld()
+    loadData(ngramsData)
+    instance.newInstance = build
+    return instance
+}
 
-export { eld };
-export default eld;
+const eld = build()
+
+export { eld }
+export default eld

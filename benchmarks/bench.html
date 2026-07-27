@@ -14,7 +14,13 @@
 <script type="module">
     import { eld } from '../src/entries/dynamic.js'
 
+    let start = Date.now()
+
+    //const detector = eld.newInstance()
     await eld.load('large')
+    //await detector.load('large')
+
+    const load_time = Date.now() - start;
     let rates = []
     let times = []
     let scores = {}
@@ -33,11 +39,10 @@
         let correct = 0
         let fails = 0
         let len = tests.length
-        let start
         let duration = 0
 
         tests.forEach(function (testl) {
-            start = Date.now();
+            start = Date.now()
             let key = eld.detect(testl[0]).language
             duration += Date.now() - start;
             if (key === testl[1]) {
@@ -45,16 +50,16 @@
             } else {
                 fails++
             }
-            // Get score averages
             /*
-			let thisScores = eld.detect(testl[0]).getScores()
-			if ( thisScores[testl[1]] ) {
-				if ( !scores[testl[1]] ) {
-					scores[testl[1]] = []
-				}
-				scores[testl[1]].push(thisScores[testl[1]])
-			}
-			*/
+            // Get score averages
+            let thisScores = eld.detect(testl[0]).getScores()
+            if ( thisScores[testl[1]] ) {
+               if ( !scores[testl[1]] ) {
+                  scores[testl[1]] = []
+               }
+               scores[testl[1]].push(thisScores[testl[1]])
+            }
+            */
         })
         rates.push(correct / len)
         times.push(duration)
@@ -71,6 +76,7 @@
     const duration_average = times.reduce((sum, times) => sum + times, 0) / times.length;
     console.log('Accuracy average : ' + (Math.round(accuracy_average * 100000) / 1000) + '%');
     console.log('Duration average: ' + (duration_average / 1000) + ' sec.');
+    console.log('Load time: ' + (load_time / 1000) + ' sec.');
 
     // Print score averages
     /*

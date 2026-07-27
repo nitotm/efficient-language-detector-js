@@ -16,20 +16,33 @@
     import { eld } from './src/entries/dynamic.js' // import { eld } from "eld";
     // import { eld } from './src/entries/static.large.js' // import { eld } from "eld/large";
 
+    /*
+    * Each entry point import type is a global instance, dynamic.js is one global instance, and each static size a
+    * different one: static.large.js, static.medium.js, etc. To completely isolate or settings, and database choice for
+    * dynamic import, we must use newInstance()
+    */
+    const eldLarge = eld.newInstance() //  independent instance, isolated settings
+
     // Initialize database, select file: 'extrasmall', 'small', 'medium', 'large' or subsets
-    await eld.load('large') // Not necessary/available at static sizes { eld/large } imports and bundles
+    // load() is not necessary/available at static sizes { eld/large } imports and bundles
+    await eldLarge.load('large')
+
+    await eld.load('small') // Example to load another database to the global instance
 
     // detect() expects a UTF-8 string, returns an object, with a 'language' variable : ISO 639-1 code or empty string
-    console.log('Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?'))
+    console.log('Hola, cómo te llamas?', eldLarge.detect('Hola, cómo te llamas?'))
     // { language: 'es', getScores(): {'es': 0.5, 'et': 0.2}, isReliable(): true }
     // { language: string, getScores(): Object, isReliable(): boolean }
     // isReliable(threshold = 0.75) can take a threshold ratio 0-1. A higher threshold will make check more strict.
 
-    console.log('Hola, cómo te llamas?', eld.detect('Hola, cómo te llamas?').language)
+    console.log('Hola, cómo te llamas?', eldLarge.detect('Hola, cómo te llamas?').language)
     // 'es'
 
-    console.log('getScores', eld.detect('Hola, cómo te llamas?').getScores())
-    console.log('isReliable', eld.detect('Hola, cómo te llamas?').isReliable())
+    console.log('getScores', eldLarge.detect('Hola, cómo te llamas?').getScores())
+    console.log('isReliable', eldLarge.detect('Hola, cómo te llamas?').isReliable())
+
+    // The global `eld` instance has all methods and configuration options a `newInstance()` instance has
+    console.log('Hola, cómo te llamas? (Global instance)', eld.detect('Hola, cómo te llamas?').language)
 
     /*
     * To reduce the languages to be detected, there are 2 options, they only need to be executed once.
@@ -43,19 +56,19 @@
     let languagesSubset = ['en', 'es', 'fr', 'it', 'nl', 'de']
 
     // Option 1. With dynamicLangSubset, detector executes normally, but at the end will filter the excluded languages
-    console.log(eld.setLanguageSubset(languagesSubset)) // Returns the validated languages of the subset
+    console.log(eldLarge.setLanguageSubset(languagesSubset)) // Returns the validated languages of the subset
     // { 9: "de", 11: "en", 12: "es", 17: "fr", 25: "it", 37: "nl" }
 
     // to remove the subset
-    eld.setLanguageSubset(false)
+    eldLarge.setLanguageSubset(false)
 
     /*
-    Option 2. The optimal way to regularly use the same subset, will be using saveSubset()
-    eld.saveSubset() will download a new database of Ngrams with only the subset languages. (Only at a web browser)
-      It is not included in the minified version.
-      saveSubset() is also NOT included for Node.js, you would need to use a browser to download the Ngrams file
+    * Option 2. The optimal way to regularly use the same subset, will be using saveSubset()
+    * eld.saveSubset() will download a new database of Ngrams with only the subset languages. (Only at a web browser)
+    * It is not included in the minified version.
+    * saveSubset() is also NOT included for Node.js, you would need to use a browser to download the Ngrams file
     */
-    // eld.saveSubset(languagesSubset)
+    // eldLarge.saveSubset(languagesSubset)
 
     // load() Is not available at static sizes { eld/large } imports and bundles
     // We can dynamically load any other database saved at src/ngrams/, including subsets. Returns true if success
@@ -63,6 +76,7 @@
     // eld.load('medium').then((loaded) => { if (loaded) { /* code */ } })
 
     // Finally, we can get the current status of eld: languages, database type and subset
+    console.log(eldLarge.info())
     console.log(eld.info())
 
     /*

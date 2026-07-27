@@ -7,14 +7,29 @@ Package npmjs.com/package/eld
 
 import { avgScore } from './avgScore.js'
 
-export const languageData = {
-    langCodes: {}, langScore: [], ngrams: {}, type: '', avgScore: avgScore
+/**
+ * Creates a fresh, independent language-data container. Each eld instance (see createEld() in
+ * languageDetector.js) owns one of these, instead of every instance sharing a single module-level
+ * object. This is what allows two different imports/instances to hold two different databases
+ * (e.g. 'large' and 'small') at the same time, in the same process, without conflicting.
+ *
+ * @returns {Object}
+ */
+export function createLanguageData() {
+    return {
+        langCodes: {}, langScore: [], ngrams: {}, type: '', avgScore: avgScore
+    }
 }
 
 /**
+ * Mutates a given languageData instance in place with a loaded ngrams database.
+ * Kept as a pure function of its arguments (no reference to any shared/module-level state) so it
+ * only ever affects the instance explicitly passed to it.
+ *
+ * @param {Object} languageData instance created by createLanguageData()
  * @param {Object} data
  */
-export function setNgrams(data) {
+export function setNgrams(languageData, data) {
     languageData.langCodes = data.languages
     languageData.langScore = Array(Object.keys(data.languages).length).fill(0)
     languageData.ngrams = data.ngrams

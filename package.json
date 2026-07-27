@@ -1,15 +1,19 @@
 {
   "name": "eld",
-  "version": "2.0.3",
+  "version": "2.1.0-beta.0",
   "description": "Fast and accurate natural language detection. Detector written in Javascript. Efficient language detector, Nito-ELD, ELD.",
   "main": "src/entries/dynamic.js",
   "type": "module",
+  "engines": {
+    "node": ">=14.17.0"
+  },
   "types": "index.d.ts",
   "files": [
     "src",
     "index.d.ts",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "exports": {
     ".": {

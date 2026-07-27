@@ -63,6 +63,19 @@ interface Eld {
 
     /** Return runtime information about eld. */
     info(): EldInfo;
+
+    /**
+     * Creates a new, fully independent eld instance with its own loaded database, language
+     * subset and text-cleanup setting - none of which are shared with the instance newInstance()
+     * was called on, or with any other instance. Useful when different parts of the same process
+     * need different settings (or, for the dynamic entry, different database sizes) at the same
+     * time.
+     *
+     * On a static entry (e.g. `eld/large`), the new instance is preloaded with the same fixed
+     * database. On the dynamic entry, the new instance starts unloaded, just like the top-level
+     * `eld` - call `load()` on it before using `detect()`.
+     */
+    newInstance(): Eld;
 }
 
 /**
@@ -75,6 +88,9 @@ interface EldWithLoader extends Eld {
 
     /** @deprecated Use `load` instead. */
     loadNgrams(size?: string): Promise<void | true>;
+
+    /** Creates a new, independent, unloaded dynamic instance - see `Eld.newInstance()`. */
+    newInstance(): EldWithLoader;
 }
 
 /** The primary exported API object. Static entries export `eld: Eld`. The dynamic root exports `eld: EldWithLoader`. */
