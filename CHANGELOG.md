@@ -6,7 +6,7 @@ Notable changes to this project are documented in this file.
 
 ### Fixed
 
-- **Security: fixed a ReDoS vulnerability in the domain-matching regex used by 
+- Security: fixed a ReDoS vulnerability in the domain-matching regex used by 
   `enableTextCleanup(true)`.
 
 ### Added
