@@ -42,7 +42,7 @@ function isReliable(results, language, numNgrams, thresholdRatio) {
     if (!results.length || numNgrams < 3) {
         return false
     }
-    const nextScore = results.length > 1 ? results[1][0] : 0
+    const nextScore = results.length > 1 ? results[1][1] : 0
     return !(avgScore[language] * thresholdRatio > results[0][1] || 0.01 >
         Math.abs(results[0][1] - nextScore))
 

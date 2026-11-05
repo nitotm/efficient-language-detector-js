@@ -1,6 +1,7 @@
 import { eld } from '../src/entries/dynamic.js'
 import { eld as eldLarge } from '../src/entries/static.large.js'
 import { eld as eldSmall } from '../src/entries/static.small.js'
+import { LanguageResult } from '../src/LanguageResult.js'
 import runTests from './testRunner.js'
 
 await eld.load('medium');
@@ -55,6 +56,16 @@ const testCases = [
     {
         name: 'Check minimum confidence', assert: '===', compare: false, func: function () {
             return eld.detect('zxz zcz zvz zbz znz zmz zlz zsz zdz zkz zjz pelo').isReliable()
+        },
+    },
+
+    {
+        name: 'Reliability uses score margin rather than runner-up language ID', assert: '===', compare: true, func: function () {
+            const lowIdRunnerUp = new LanguageResult('en', { 11: 497500, 1: 247500 }, 100, { 11: 'en', 1: 'ar' })
+            const highIdRunnerUp = new LanguageResult('en', { 11: 497500, 15: 247500 }, 100, { 11: 'en', 15: 'fr' })
+            const lowIdReliable = lowIdRunnerUp.isReliable()
+            const highIdReliable = highIdRunnerUp.isReliable()
+            return lowIdReliable === highIdReliable && !lowIdReliable
         },
     },
 
